@@ -14,6 +14,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     List<string> Possible_Names = new List<string> { "Google", "OLX", "YouTube", "mais um" }, 
         Possible_Domains = new List<string>{ ".com", ".org", ".cu" }, 
         Possible_Downgrades = new List<string> { "Doors", "Time", "Difficult" };
+    //Não sei se Downgrades é um nome condizente pra essa lista. São aspectos do jogo que vão mudando para ficar mais dificeis.
 
     float Max_Timer, 
         Current_Timer;
@@ -49,6 +50,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
 
         Time_Ticking();
+        Touching_Screen();
     }
 
     void Generating_Correct_Word()
@@ -94,13 +96,43 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         {
             Current_Timer -= Time.deltaTime;
 
-            //Pôr esse timer no TImer_Display
-            print(((int)Current_Timer));
+            Timer_Display.text = ((int)Current_Timer).ToString();
 
 
             if (Current_Timer <= 0f)
             {
                 Defeat();
+            }
+        }
+    }
+
+    void Touching_Screen()
+    {
+        if (Is_On_Round)
+        {
+            if(Input.touchCount > 0)
+            {
+                Touch Getting_Touch = Input.GetTouch(0);
+
+                if(Getting_Touch.phase == TouchPhase.Began)
+                {
+
+                    //Eu não pensei em nomes condinzentes para por nessas variaveis...
+                    Ray r = Camera.main.ScreenPointToRay(Getting_Touch.position);
+                    RaycastHit hit;
+
+                    if(Physics.Raycast(r, out hit))
+                    {
+                        if (hit.transform.CompareTag("Correct_Tag_Placeholder"))
+                        {
+                            Right_Ansher();
+                        }
+                        else if (hit.transform.CompareTag("Wrong_Tag_Placeholder"))
+                        {
+                            Defeat();
+                        }
+                    }
+                }
             }
         }
     }
@@ -114,18 +146,30 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     void Right_Ansher()
     {
-        print("Você Acertou!");
+
         Player_Score++;
+        print($"Você Acertou!, pontuação: {Player_Score}");
 
         if (Player_Score % 5 == 0 && Possible_Downgrades.Count != 0)
         {
+            print("Dificultando");
             Difficulting();
         }
+        else if(Possible_Downgrades.Count == 0)
+        {
+            print("Não dá pra dificultar mais");
+        }
+
+        Start_New_Round();
     }
 
     void Difficulting()
     {
+
+        //Nome extremamente goofy pra uma variavel, eu sei. Ainda vou achar um nome melhor.
         string Decide_Whats_Bcome_Harder = (Possible_Downgrades[Random.Range(0, Possible_Downgrades.Count)]);
+
+        print($"Aumentar dificuldade: {Decide_Whats_Bcome_Harder}");
 
         switch (Decide_Whats_Bcome_Harder)
         {
@@ -141,10 +185,13 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Door_Amount++;
 
+        print($"Quantidade de portas: {Door_Amount}");
+
         if(Door_Amount == 5)
         {
 
             Possible_Downgrades.Remove("Doors");
+            print("Nível máximo alcançado em PORTAS");
         }
     }
 
@@ -152,19 +199,26 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Max_Timer -= 5f;
 
-        if(Max_Timer == 5f)
+        print($"Tempo máximo: {Max_Timer}");
+
+        if (Max_Timer == 5f)
         {
             Possible_Downgrades.Remove("Time");
+            print("Nível máximo alcançado em TEMPO");
         }
     }
 
+    //Ainda vou trocar o nome desse método. Eu também não gosto de como tem 2 coisas falando sobre "dificultar". Queria um nome diferente
     void Deixando_Mais_Dificil()
     {
         Difficult_Level++;
 
-        if(Difficult_Level == 3)
+        print($"Dificuldade nível: {Difficult_Level}");
+
+        if (Difficult_Level == 3)
         {
             Possible_Downgrades.Remove("Difficult");
+            print("Nível máximo alcançado em DIFICULDADE");
         }
     }
 }

@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Correct_Tag_Placeholder
+  - Wrong_Tag_Placeholder
   layers:
   - Default
   - TransparentFX
