@@ -340,6 +340,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b27392b7390534cba22087a66a699b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player_Score: 0
+  Right_Word_Text: {fileID: 0}
+  Door_Text1: {fileID: 0}
+  DoorText2: {fileID: 0}
+  Door_Text3: {fileID: 0}
+  DoorText4: {fileID: 0}
+  Door_Text5: {fileID: 0}
+  Timer_Display: {fileID: 0}
 --- !u!65 &1748110976
 BoxCollider:
   m_ObjectHideFlags: 0
