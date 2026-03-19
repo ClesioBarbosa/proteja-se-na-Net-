@@ -11,9 +11,33 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     string Right_Word, 
         Right_Domain;
 
-    List<string> Possible_Names = new List<string> { "Google", "OLX", "YouTube", "mais um" }, 
-        Possible_Domains = new List<string>{ ".com", ".org", ".cu" }, 
-        Possible_Downgrades = new List<string> { "Doors", "Time", "Difficult" };
+    public GameObject Door_Prefab;
+
+    List<string> Possible_Names = new List<string> { "Google", "OLX", "YouTube", "mais um" },
+        Possible_Domains = new List<string> { ".com", ".org", ".gov", ".edu", ".info", ".io", ".net", ".online", ".blog", ".app" },
+        Possible_Downgrades = new List<string> { "Doors", "Time", "Difficult" }, 
+
+        //Sistema de silabas que vai ser utilizado... Mas eu já vi que não é melhor fazer dessa forma.
+        Silabas = new List<string> { "ba", "be", "bi", "bo", "bu", "by", 
+            "bae", "bai", "bao", "bau", "bay", 
+            "bea", "bei", "beo", "beu", "bey", 
+            "bia", "bie", "bio", "biu", "biy", 
+            "boa", ""};
+
+    List<string> Generate_All_Words()
+    {
+        List<string> words = new List<string>();
+
+        for (int i = 0; i < Door_Amount; i++)
+        {
+            words.Add(Generating_Wrong_Words());
+        }
+
+        return words;
+    }
+
+    List<GameObject> Doors_List = new List<GameObject>();
+
     //Não sei se Downgrades é um nome condizente pra essa lista. São aspectos do jogo que vão mudando para ficar mais dificeis.
 
     float Max_Timer, 
@@ -23,11 +47,6 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Player_Highscore;
 
     [SerializeField] public TextMeshProUGUI Right_Word_Text, 
-        Door_Text1, 
-        DoorText2, 
-        Door_Text3, 
-        DoorText4, 
-        Door_Text5, 
         Timer_Display, 
         Score_Display;
 
@@ -35,6 +54,10 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     int Difficult_Level, 
         Door_Amount;
+
+    public float Spacing = 2f;
+
+    
 
     void Start()
     {
@@ -58,12 +81,13 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Right_Word = (Possible_Names[Random.Range(0, Possible_Names.Count)]);
         Right_Domain = (Possible_Domains[Random.Range(0, Possible_Domains.Count)]);
 
-        print($"Palavra correta: {Right_Word}{Right_Domain}");
+        Right_Word_Text.text = (Right_Word + Right_Domain);
 
-        Generating_Wrong_Words();
+        List<string> s = Generate_All_Words();
+        Spawn_Doors(s);
     }
 
-    void Generating_Wrong_Words()
+    string Generating_Wrong_Words()
     {
         string Wrong_Word = Right_Word;
         string Wrong_Domain = Right_Domain;
@@ -79,11 +103,57 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
             Wrong_Domain = (Possible_Domains[Random.Range(0, Possible_Domains.Count)]);
         }
 
-        print($"Palavra incorreta: {Wrong_Word}{Wrong_Domain}");
+        return Wrong_Word + Wrong_Domain;
+    }
+
+    void Spawn_Doors(List<string> Names)
+    {
+
+        int correct_Index = Random.Range(0, Door_Amount);
+
+        float total_Width = (Door_Amount - 1) * Spacing;
+        float start_X = -total_Width / 2;
+
+        for(int i = 0; i < Door_Amount; i++)
+        {
+            Vector3 Door_Position = new Vector3(start_X + i * Spacing,
+                Door_Prefab.transform.position.y,
+                Door_Prefab.transform.position.z);
+
+            GameObject Door_Instance = Instantiate(Door_Prefab,
+                Door_Position,
+                Quaternion.identity);
+
+            Doors_List.Add(Door_Instance);
+
+            string textToUse;
+
+            if (i == correct_Index)
+            {
+                textToUse = Right_Word + Right_Domain;
+                Door_Instance.tag = "Correct_Tag_Placeholder";
+            }
+            else
+            {
+                textToUse = Names[i];
+                Door_Instance.tag = "Wrong_Tag_Placeholder";
+            }
+
+
+            TMPro.TextMeshPro Door_Text = Door_Instance.GetComponentInChildren<TMPro.TextMeshPro>();
+            Door_Text.text = textToUse;
+        }
     }
 
     void Start_New_Round()
     {
+
+        foreach (GameObject door in Doors_List)
+        {
+            Destroy(door);
+        }
+
+        Doors_List.Clear();
         Current_Timer = Max_Timer;
         Is_On_Round = true;
 
@@ -123,11 +193,11 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
                     if(Physics.Raycast(r, out hit))
                     {
-                        if (hit.transform.CompareTag("Correct_Tag_Placeholder"))
+                        if (hit.transform.root.CompareTag("Correct_Tag_Placeholder"))
                         {
                             Right_Ansher();
                         }
-                        else if (hit.transform.CompareTag("Wrong_Tag_Placeholder"))
+                        else if (hit.transform.root.CompareTag("Wrong_Tag_Placeholder"))
                         {
                             Defeat();
                         }
