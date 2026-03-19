@@ -15,14 +15,22 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     List<string> Possible_Names = new List<string> { "Google", "OLX", "YouTube", "mais um" },
         Possible_Domains = new List<string> { ".com", ".org", ".gov", ".edu", ".info", ".io", ".net", ".online", ".blog", ".app" },
-        Possible_Downgrades = new List<string> { "Doors", "Time", "Difficult" }, 
+        Possible_Progressions = new List<string> { "Doors", "Time", "Difficult", "Syllables" },
 
         //Sistema de silabas que vai ser utilizado... Mas eu já vi que não é melhor fazer dessa forma.
-        Silabas = new List<string> { "ba", "be", "bi", "bo", "bu", "by", 
-            "bae", "bai", "bao", "bau", "bay", 
-            "bea", "bei", "beo", "beu", "bey", 
-            "bia", "bie", "bio", "biu", "biy", 
-            "boa", ""};
+        Syllables_Consonants_Starters = new List<string> { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", 
+            "n", "p", "q", "r", "s", "t", "v", "w", "x", "z", 
+            "br", "cr", "dr", "fr", "gr", "kr", "pr", "tr", "vr", 
+            "ch", "lh", "nh", 
+            "bl", "cl", "fl", "gl", "kl", "pl", "tl"},
+        Syllables_Consonants_Finishers = new List<string> { "l", "m", "n", "r", "s", "w", "x", "y", "z" },
+        Syllables_Vowels = new List<string> { "a", "e", "i", "o", "u", "y", 
+            "ae", "ai", "ao", "au", "ay", 
+            "ea", "ei", "eo", "eu", "ey", 
+            "ia", "ie", "io", "iu", "iy", 
+            "oa", "oe", "oi", "ou", "oy", 
+            "ua", "ue", "ui", "uo", "uy", 
+            "ya", "ye", "yi", "yo", "yu"};
 
     List<string> Generate_All_Words()
     {
@@ -38,8 +46,6 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     List<GameObject> Doors_List = new List<GameObject>();
 
-    //Não sei se Downgrades é um nome condizente pra essa lista. São aspectos do jogo que vão mudando para ficar mais dificeis.
-
     float Max_Timer, 
         Current_Timer;
 
@@ -53,7 +59,8 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     bool Is_On_Round;
 
     int Difficult_Level, 
-        Door_Amount;
+        Door_Amount,
+        Syllables;
 
     public float Spacing = 2f;
 
@@ -63,7 +70,8 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Player_Score = 0; 
         Door_Amount = 2; 
-        Difficult_Level = 1; 
+        Difficult_Level = 1;
+        Syllables = 1;
         Max_Timer = 30f;
 
         Start_New_Round();
@@ -92,18 +100,96 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         string Wrong_Word = Right_Word;
         string Wrong_Domain = Right_Domain;
 
-        /*1º mudar o dominio: FEITO
-         * 2º Umas letras faltando: INCOMPLETO
-         3º Letras diferentes: INCOMPLETO*/
+        int Randomize_Chances = 0;
 
 
-        //Separar está parte em outro lugar
-        while (Wrong_Domain == Right_Domain)
+
+
+        switch (Difficult_Level)
         {
-            Wrong_Domain = (Possible_Domains[Random.Range(0, Possible_Domains.Count)]);
+            case 1:
+                Randomize_Chances = 0;
+                break;
+
+            case 2:
+                Randomize_Chances = Random.Range(0, 2);
+                break;
+
+            case 3:
+                Randomize_Chances = Random.Range(0, 3);
+                break;
         }
 
+        if(Randomize_Chances == 0)
+        {
+            Wrong_Domain = Generating_Fake_Domain(Wrong_Domain);
+        }
+        else if (Randomize_Chances == 1)
+        {
+            Randomize_Chances = Random.Range(0, 2);
+
+
+            if (Randomize_Chances == 0)
+            {
+
+                Wrong_Domain = Generating_Fake_Domain(Wrong_Domain);
+            }
+
+            Wrong_Word = Generating_Name_Without_Some_Letter(Wrong_Word);
+        }
+        else if(Randomize_Chances == 2)
+        {
+
+            Randomize_Chances = Random.Range(0, 3);
+
+            if (Randomize_Chances == 0)
+            {
+
+                Wrong_Domain = Generating_Fake_Domain(Wrong_Domain);
+            }
+
+            Generating_Fake_Name(Wrong_Word);
+        }
+        
+
         return Wrong_Word + Wrong_Domain;
+    }
+
+    string Generating_Fake_Domain(string Wrong_Domain)
+    {
+
+
+        string Fake_Domain = Wrong_Domain;
+
+        print(Fake_Domain);
+
+        while (Fake_Domain == Right_Domain)
+        {
+            Fake_Domain = (Possible_Domains[Random.Range(0, Possible_Domains.Count)]);
+        }
+
+        return Fake_Domain;
+    }
+
+    string Generating_Name_Without_Some_Letter(string Wrong_Word)
+    {
+
+        int indexToRemove = Random.Range(0, Wrong_Word.Length);
+
+        string Fake_Name = Wrong_Word.Remove(indexToRemove, 1);
+
+        return Fake_Name;
+
+    }
+
+    string Generating_Fake_Name(string Wrong_Word)
+    {
+        string Fake_Name = Wrong_Word;
+
+
+
+        return Fake_Name;
+
     }
 
     void Spawn_Doors(List<string> Names)
@@ -140,13 +226,15 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
             }
 
 
-            TMPro.TextMeshPro Door_Text = Door_Instance.GetComponentInChildren<TMPro.TextMeshPro>();
+            TextMeshPro Door_Text = Door_Instance.GetComponentInChildren<TextMeshPro>();
             Door_Text.text = textToUse;
         }
     }
 
     void Start_New_Round()
     {
+
+        Score_Display.text = Player_Score.ToString();
 
         foreach (GameObject door in Doors_List)
         {
@@ -218,14 +306,14 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
 
         Player_Score++;
-        print($"Você Acertou!, pontuação: {Player_Score}");
+        
 
-        if (Player_Score % 5 == 0 && Possible_Downgrades.Count != 0)
+        if (Player_Score % 5 == 0 && Possible_Progressions.Count != 0)
         {
             print("Dificultando");
             Difficulting();
         }
-        else if(Possible_Downgrades.Count == 0)
+        else if(Possible_Progressions.Count == 0)
         {
             print("Não dá pra dificultar mais");
         }
@@ -237,7 +325,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
 
         //Nome extremamente goofy pra uma variavel, eu sei. Ainda vou achar um nome melhor.
-        string Decide_Whats_Bcome_Harder = (Possible_Downgrades[Random.Range(0, Possible_Downgrades.Count)]);
+        string Decide_Whats_Bcome_Harder = (Possible_Progressions[Random.Range(0, Possible_Progressions.Count)]);
 
         print($"Aumentar dificuldade: {Decide_Whats_Bcome_Harder}");
 
@@ -246,6 +334,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
             case "Doors": Add_Doors(); break;
             case "Time":    Reduce_Max_Timer(); break;
             case "Difficult":   Deixando_Mais_Dificil();    break;
+            case "Syllables":   Adding_Syllables(); break;
 
 
         }
@@ -260,7 +349,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         if(Door_Amount == 5)
         {
 
-            Possible_Downgrades.Remove("Doors");
+            Possible_Progressions.Remove("Doors");
             print("Nível máximo alcançado em PORTAS");
         }
     }
@@ -273,7 +362,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
         if (Max_Timer == 5f)
         {
-            Possible_Downgrades.Remove("Time");
+            Possible_Progressions.Remove("Time");
             print("Nível máximo alcançado em TEMPO");
         }
     }
@@ -287,8 +376,21 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
         if (Difficult_Level == 3)
         {
-            Possible_Downgrades.Remove("Difficult");
+            Possible_Progressions.Remove("Difficult");
             print("Nível máximo alcançado em DIFICULDADE");
+        }
+    }
+
+    void Adding_Syllables()
+    {
+        Syllables++;
+
+        print($"Quantidade de silabas: {Syllables}");
+
+        if(Syllables == 5)
+        {
+            Possible_Progressions.Remove("Syllables");
+            print("Nível máximo alcançado em SILABAS");
         }
     }
 }
