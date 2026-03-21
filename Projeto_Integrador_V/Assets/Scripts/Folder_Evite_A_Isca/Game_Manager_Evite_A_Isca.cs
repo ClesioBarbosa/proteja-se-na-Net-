@@ -13,11 +13,12 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public GameObject Door_Prefab;
 
+    //Deixando a lista de Possible_Names para caso a gente abandone a ideia de sílabas e siga por esse lado mais simples.
     List<string> Possible_Names = new List<string> { "Google", "OLX", "YouTube", "mais um" },
         Possible_Domains = new List<string> { ".com", ".org", ".gov", ".edu", ".info", ".io", ".net", ".online", ".blog", ".app" },
         Possible_Progressions = new List<string> { "Doors", "Time", "Difficult", "Syllables" },
 
-        //Sistema de silabas que vai ser utilizado... Mas eu já vi que não é melhor fazer dessa forma.
+        //Eu não sei se esse sistema de sílabas ficou legal. Parece uma ideia legal mas ele fica estranho bem rápido :(
         Syllables_Consonants_Starters = new List<string> { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", 
             "n", "p", "q", "r", "s", "t", "v", "w", "x", "z", 
             "br", "cr", "dr", "fr", "gr", "kr", "pr", "tr", "vr", 
@@ -34,14 +35,43 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     List<string> Generate_All_Words()
     {
-        List<string> words = new List<string>();
+        List<string> Words = new List<string>();
 
         for (int i = 0; i < Door_Amount; i++)
         {
-            words.Add(Generating_Wrong_Words());
+            Words.Add(Generating_Wrong_Words());
         }
 
-        return words;
+        return Words;
+    }
+
+    string Generate_Syllable_Word()
+    {
+        string Word = "";
+
+        for (int i = 0; i < Syllables; i++)
+        {
+            string New_Syllable = "";
+
+            
+            if (Random.value > 0.5f)
+            {
+                New_Syllable += Syllables_Consonants_Starters[ Random.Range(0, Syllables_Consonants_Starters.Count) ];
+            }
+
+            
+            New_Syllable += Syllables_Vowels[ Random.Range(0, Syllables_Vowels.Count) ];
+
+            
+            if (Random.value > 0.5f)
+            {
+                New_Syllable += Syllables_Consonants_Finishers[ Random.Range(0, Syllables_Consonants_Finishers.Count) ];
+            }
+
+            Word += New_Syllable;
+        }
+
+        return Word;
     }
 
     List<GameObject> Doors_List = new List<GameObject>();
@@ -86,7 +116,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     void Generating_Correct_Word()
     {
-        Right_Word = (Possible_Names[Random.Range(0, Possible_Names.Count)]);
+        Right_Word = Generate_Syllable_Word();
         Right_Domain = (Possible_Domains[Random.Range(0, Possible_Domains.Count)]);
 
         Right_Word_Text.text = (Right_Word + Right_Domain);
@@ -148,7 +178,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
                 Wrong_Domain = Generating_Fake_Domain(Wrong_Domain);
             }
 
-            Generating_Fake_Name(Wrong_Word);
+            Wrong_Word = Generating_Fake_Name(Wrong_Word);
         }
         
 
@@ -184,11 +214,42 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     string Generating_Fake_Name(string Wrong_Word)
     {
-        string Fake_Name = Wrong_Word;
+        List<string[]> similar_Digits = new List<string[]>
+        {
+        new string[] { "a", "o", "c", "0", "e" },
+        new string[] { "i", "l", "1", "j" },
+        new string[] { "n", "m", "w", "v", "u" },
+        new string[] { "q", "p", "d", "g", "h", "k", "x", "b", "5", "6" },
+        new string[] { "t", "f", "r", "y"},
+        new string[] { "s", "z", "5" }
+        };
 
+        char[] chars = Wrong_Word.ToCharArray();
 
+        
+        int index = Random.Range(0, chars.Length);
+        char original_Char = char.ToLower(chars[index]);
 
-        return Fake_Name;
+        
+        foreach (var group in similar_Digits)
+        {
+            if (group.Contains(original_Char.ToString()))
+            {
+                
+                string new_Char;
+                do
+                {
+                    new_Char = group[Random.Range(0, group.Length)];
+                }
+                while (new_Char[0] == original_Char);
+
+                chars[index] = new_Char[0];
+                break;
+            }
+        }
+
+        return new string(chars);
+
 
     }
 
