@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class Game_Manager_Evite_A_Isca : MonoBehaviour
@@ -275,6 +272,10 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
             string textToUse;
 
+            Script_Doors_Evite_A_Isca Door_Script = Door_Instance.GetComponent<Script_Doors_Evite_A_Isca>();
+
+            Door_Script.Main_Script = this;
+
             if (i == correct_Index)
             {
                 textToUse = Right_Word + Right_Domain;
@@ -289,6 +290,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
             TextMeshPro Door_Text = Door_Instance.GetComponentInChildren<TextMeshPro>();
             Door_Text.text = textToUse;
+
         }
     }
 
@@ -342,13 +344,13 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
                     if(Physics.Raycast(r, out hit))
                     {
-                        if (hit.transform.root.CompareTag("Correct_Tag_Placeholder"))
+                        Script_Doors_Evite_A_Isca Door_Object = hit.transform.root.GetComponent<Script_Doors_Evite_A_Isca>();
+
+                        if (Door_Object != null)
                         {
-                            Right_Ansher();
-                        }
-                        else if (hit.transform.root.CompareTag("Wrong_Tag_Placeholder"))
-                        {
-                            Defeat();
+                            Is_On_Round = false;
+
+                            StartCoroutine(Door_Object.Open_Door());
                         }
                     }
                 }
@@ -356,7 +358,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         }
     }
 
-    void Defeat()
+    public void Defeat()
     {
 
         //Aqui precisa trocar de cena
@@ -365,7 +367,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Is_On_Round = false;
     }
 
-    void Right_Ansher()
+    public void Right_Ansher()
     {
 
         Player_Score++;

@@ -1,0 +1,80 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Script_Doors_Evite_A_Isca : MonoBehaviour
+{
+    GameObject Door_Hinge, Spawned_Object;
+
+    public GameObject Seaweed,
+        Bait;
+
+    public bool Correct;
+
+    [SerializeField] public Game_Manager_Evite_A_Isca Main_Script;
+    void Start()
+    {
+        Door_Hinge = transform.Find("Door_Pivot_Placeholder").gameObject;
+
+        if(gameObject.tag == "Correct_Tag_Placeholder")
+        {
+            Correct = true;
+        }
+        else
+        {
+            Correct = false;
+        }
+    }
+
+    public IEnumerator Open_Door()
+    {
+        Spawn_Result();
+
+        float Duration = 2f;
+        float Animation_Time = 0f;
+
+        Quaternion Initial_Rotation = Quaternion.Euler(0, 0, 0);
+        Quaternion Final_Rotation = Quaternion.Euler(0, -90, 0);
+
+        while (Animation_Time < Duration)
+        {
+            Animation_Time += Time.deltaTime;
+            float t = Animation_Time / Duration;
+
+            
+            t = Mathf.SmoothStep(0, 1, t);
+
+            Door_Hinge.transform.rotation = Quaternion.Lerp(Initial_Rotation, Final_Rotation, t);
+
+            yield return null;
+        }
+
+        
+        Door_Hinge.transform.rotation = Final_Rotation;
+
+        yield return new WaitForSeconds(1f);
+
+        Destroy(Spawned_Object);
+
+        if (Correct)
+        {
+            Main_Script.Right_Ansher();
+        }
+        else
+        {
+            Main_Script.Defeat();
+        }
+    }
+
+    void Spawn_Result()
+    {
+        if (Correct)
+        {
+            Spawned_Object = Instantiate(Seaweed, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (gameObject.transform.position.z + 2f)), Quaternion.identity);
+        }
+        else
+        {
+            Spawned_Object = Instantiate(Bait, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (gameObject.transform.position.z + 2f)), Quaternion.identity);
+        }
+    }
+}
