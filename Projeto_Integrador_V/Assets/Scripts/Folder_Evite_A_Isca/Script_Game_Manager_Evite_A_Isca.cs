@@ -10,25 +10,15 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public GameObject Door_Prefab;
 
-    //Deixando a lista de Possible_Names para caso a gente abandone a ideia de sílabas e siga por esse lado mais simples.
-    List<string> Possible_Names = new List<string> { "Google", "OLX", "YouTube", "mais um" },
+    //Os nomes dos sites são sobrenomes de amigos do meu primeiro semestre, parceiros de equipe de projetos integradores, professores de oficina e orientadores das minhas equipes
+    //Quem achar ruim é bobo
+    List<string> Possible_Names = new List<string> { "Pereira", "Rozendo", "Nascimento", "Campos", "Rangel", "Santos", "Ferreira", "Lima", "Caridade", "Barreto", 
+        "Oliveira", "Mota", "Mafra", "Jacinto", "Silva", "Lopes", "Desiderio", "Brito", "Braga", "Cerqueira", 
+        "Sanches", "Barbosa", "Pacheco", "Freire", "Cruz", "Carmo", "Souto", "Cunha", "Andrade", 
+        "Rodovalho", "Arnaut", "Maior", "Sales", "Forte", "Warley", "Valenca", "Araujo", "Xavier", "Mendes", 
+        "Costa", "Leite", "Junior", "Almeida", "Carvalho", "Melo", "Neto", "Gomes"},
         Possible_Domains = new List<string> { ".com", ".org", ".gov", ".edu", ".info", ".io", ".net", ".online", ".blog", ".app" },
-        Possible_Progressions = new List<string> { "Doors", "Time", "Difficult", "Syllables" },
-
-        //Eu não sei se esse sistema de sílabas ficou legal. Parece uma ideia legal mas ele fica estranho bem rápido :(
-        Syllables_Consonants_Starters = new List<string> { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", 
-            "n", "p", "q", "r", "s", "t", "v", "w", "x", "z", 
-            "br", "cr", "dr", "fr", "gr", "kr", "pr", "tr", "vr", 
-            "ch", "lh", "nh", 
-            "bl", "cl", "fl", "gl", "kl", "pl", "tl"},
-        Syllables_Consonants_Finishers = new List<string> { "l", "m", "n", "r", "s", "w", "x", "y", "z" },
-        Syllables_Vowels = new List<string> { "a", "e", "i", "o", "u", "y", 
-            "ae", "ai", "ao", "au", "ay", 
-            "ea", "ei", "eo", "eu", "ey", 
-            "ia", "ie", "io", "iu", "iy", 
-            "oa", "oe", "oi", "ou", "oy", 
-            "ua", "ue", "ui", "uo", "uy", 
-            "ya", "ye", "yi", "yo", "yu"};
+        Possible_Progressions = new List<string> { "Doors", "Time", "Difficult"};
 
     List<string> Generate_All_Words()
     {
@@ -40,35 +30,6 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         }
 
         return Words;
-    }
-
-    string Generate_Syllable_Word()
-    {
-        string Word = "";
-
-        for (int i = 0; i < Syllables; i++)
-        {
-            string New_Syllable = "";
-
-            
-            if (Random.value > 0.5f)
-            {
-                New_Syllable += Syllables_Consonants_Starters[ Random.Range(0, Syllables_Consonants_Starters.Count) ];
-            }
-
-            
-            New_Syllable += Syllables_Vowels[ Random.Range(0, Syllables_Vowels.Count) ];
-
-            
-            if (Random.value > 0.5f)
-            {
-                New_Syllable += Syllables_Consonants_Finishers[ Random.Range(0, Syllables_Consonants_Finishers.Count) ];
-            }
-
-            Word += New_Syllable;
-        }
-
-        return Word;
     }
 
     List<GameObject> Doors_List = new List<GameObject>();
@@ -86,8 +47,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     bool Is_On_Round;
 
     int Difficult_Level, 
-        Door_Amount,
-        Syllables;
+        Door_Amount;
 
     public float Spacing = 2f;
 
@@ -98,7 +58,6 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Player_Score = 0; 
         Door_Amount = 2; 
         Difficult_Level = 1;
-        Syllables = 1;
         Max_Timer = 30f;
 
         Start_New_Round();
@@ -113,7 +72,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     void Generating_Correct_Word()
     {
-        Right_Word = Generate_Syllable_Word();
+        Right_Word = (Possible_Names[Random.Range(0, Possible_Names.Count)]);
         Right_Domain = (Possible_Domains[Random.Range(0, Possible_Domains.Count)]);
 
         Right_Word_Text.text = (Right_Word + Right_Domain);
@@ -396,7 +355,6 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
             case "Doors": Add_Doors(); break;
             case "Time":    Reduce_Max_Timer(); break;
             case "Difficult":   Deixando_Mais_Dificil();    break;
-            case "Syllables":   Adding_Syllables(); break;
 
 
         }
@@ -439,19 +397,6 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         if (Difficult_Level == 3)
         {
             Possible_Progressions.Remove("Difficult");
-            
-        }
-    }
-
-    void Adding_Syllables()
-    {
-        Syllables++;
-
-        print($"Quantidade de silabas: {Syllables}");
-
-        if(Syllables == 5)
-        {
-            Possible_Progressions.Remove("Syllables");
             
         }
     }
