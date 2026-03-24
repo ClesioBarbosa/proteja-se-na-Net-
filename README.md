@@ -4,3 +4,4 @@ projeto integrador do quinto semestre IFBA
 Andrey Pereira Rozendo (Geladeyra)  
 Clésio Barbosa Oliveira (ClesioBarbosa)  
 João Pedro Andrade Rodovalho (Mjooj)
+Bruno do Carmo Sousa (202224470026-cloud)
