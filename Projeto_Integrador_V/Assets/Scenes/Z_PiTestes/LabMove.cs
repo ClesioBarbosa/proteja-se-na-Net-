@@ -5,40 +5,59 @@ using UnityEngine;
 
 public class LabMove : MonoBehaviour
 {
-    Gyroscope gyro;
-    bool gyroEnabled;
+   private Quaternion rotacaoInicial;
+    private bool giroscopioAtivo;
+
+    [Header("Configurações")]
+    [SerializeField] float suavizacao = 5f;   // quanto maior, mais suave
+    [SerializeField] float limiteRotacao = 30f; // limite de inclinação
 
     void Start()
-    {
-        StartCoroutine(DelayedStart());
-    }
-
-    private IEnumerator DelayedStart()
-    {
-            yield return new WaitForSeconds(1f);
-            gyroEnabled = EnableGyro();
-    }
-
-    private bool EnableGyro()
     {
         if (SystemInfo.supportsGyroscope)
         {
             Input.gyro.enabled = true;
-            gyro = Input.gyro;
+            giroscopioAtivo = true;
 
-            return true;
+            rotacaoInicial = transform.rotation;
         }
-            return false;
+        else
+        {
+            giroscopioAtivo = false;
+            Debug.Log("Giroscópio não suportado.");
+        }
     }
 
-     private void Update()
+    void FixedUpdate()
     {
-        if (gyroEnabled) {GirarGiros();}
-        else Debug.Log("NÃO");
+        if (!giroscopioAtivo) return;
+
+        // Pegando rotação do celular
+        Quaternion gyro = Input.gyro.attitude;
+
+        // Convertendo para o sistema da Unity
+        Quaternion rotacao = new Quaternion(gyro.x, gyro.y, -gyro.z, -gyro.w);
+
+        // Aplicando limites (evita girar demais)
+        Vector3 angulos = rotacao.eulerAngles;
+
+        angulos.x = LimitarAngulo(angulos.x, limiteRotacao);
+        angulos.y = 0; // trava eixo Y
+        angulos.z = LimitarAngulo(angulos.z, limiteRotacao);
+
+        Quaternion rotacaoFinal = Quaternion.Euler(angulos);
+
+        // Suaviza o movimento
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            rotacaoInicial * rotacaoFinal,
+            Time.deltaTime * suavizacao
+        );
     }
 
-    void GirarGiros()
+    float LimitarAngulo(float angulo, float limite)
     {
-        gameObject.transform.rotation  = gyro.attitude;
+        if (angulo > 180) angulo -= 360;
+        return Mathf.Clamp(angulo, -limite, limite);
     }
 }
