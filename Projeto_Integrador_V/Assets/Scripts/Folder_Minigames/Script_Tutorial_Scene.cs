@@ -1,11 +1,26 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class Script_Tutorial_Scene : MonoBehaviour
 {
-    //Nome da cena pra qual esse script irá mandar.
-    public string Minigame_Scene;
 
+
+    //Textos em tela
+    [SerializeField] public TextMeshProUGUI Minigame_Name_Text, Title_Name_Text, Explanation_Text;
+
+    public string Minigame_Scene, Minigame_Name, Title_Name, Explanation;
+
+    public Image Background_Image;
+
+    private void Start()
+    {
+        Minigame_Name_Text.text = Minigame_Name;
+        Title_Name_Text.text = Title_Name;
+        Explanation_Text.text = Explanation;
+    }
 
     void Update()
     {
