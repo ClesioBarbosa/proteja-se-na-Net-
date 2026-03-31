@@ -179,7 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Evite a Isca
+  m_text: Nome do Minigame
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -325.64102, y: 0, z: -357.86374, w: 0}
+  m_margin: {x: -624.8933, y: 0, z: -744.3316, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -548,8 +548,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Observe o link correto acima das portas e clique apenas na porta que mostra
-    o link igual.
+  m_text: Regras do minigame
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1047,9 +1046,12 @@ MonoBehaviour:
   Minigame_Name_Text: {fileID: 104933082}
   Title_Name_Text: {fileID: 1855939453}
   Explanation_Text: {fileID: 516492681}
+  Minigame_Scene: Evite_a_Isca_Tutorial_Scene
+  Minigame_Name: Cuidado com os Contatos
+  Title_Name: Suspeite de contatos alheios!
+  Explanation: "Preste aten\xE7\xE3o se a segunda conversa est\xE1 igual a primeira.
+    Arraste pra direita pra aceitar e pra esquerda pra bloquear. Suspeite sempre."
   Background_Image: {fileID: 1431701396}
-  Controls_Video: {fileID: 1417521680}
-  Gameplay_Video: {fileID: 2135591965}
 --- !u!1 &1831589751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,7 +1181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Clique na porta correta!
+  m_text: "T\xEDtulo das regras"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
