@@ -51,6 +51,8 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public float Spacing = 2f;
 
+    public Script_Camera_Logic cam;
+
     
 
     void Start()
@@ -305,6 +307,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
                     {
                         Script_Doors_Evite_A_Isca Door_Object = hit.transform.root.GetComponent<Script_Doors_Evite_A_Isca>();
 
+                        cam.Start_Moving();
                         if (Door_Object != null)
                         {
                             Is_On_Round = false;
