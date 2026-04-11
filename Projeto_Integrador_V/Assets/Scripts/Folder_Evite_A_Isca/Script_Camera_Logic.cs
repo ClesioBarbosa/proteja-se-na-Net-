@@ -9,12 +9,13 @@ public class Script_Camera_Logic : MonoBehaviour
     public CinemachineVirtualCamera vcam;
     public CinemachineTrackedDolly dolly;
 
-    bool Had_To_Move;
+    public CinemachineSmoothPath path;
+
+    public bool Had_To_Move;
 
     void Start()
     {
         Had_To_Move = false;
-        // Access the Tracked Dolly component from the Virtual Camera
         dolly = vcam.GetCinemachineComponent<CinemachineTrackedDolly>();
     }
 
@@ -22,18 +23,38 @@ public class Script_Camera_Logic : MonoBehaviour
     {
         if (Had_To_Move)
         {
-            // Or increment it over time for manual movement
             dolly.m_PathPosition += Time.deltaTime * 1.0f;
         }
         else
         {
             dolly.m_PathPosition = 0f;
+
+
+            Just_One_Waypoint();
         }
-        
     }
 
-    public void Start_Moving()
+    public void Create_Waypoint(Vector3 pos)
     {
-        Had_To_Move=true;
+        int Current_Paths = path.m_Waypoints.Length;
+
+        System.Array.Resize(ref path.m_Waypoints, Current_Paths + 1);
+
+        path.m_Waypoints[Current_Paths] = new CinemachineSmoothPath.Waypoint
+        {
+            position = pos,
+            roll = 0f
+        };
+    }
+
+    void Just_One_Waypoint()
+    {
+        if (path.m_Waypoints.Length > 1)
+        {
+            CinemachineSmoothPath.Waypoint First = path.m_Waypoints[0];
+
+            path.m_Waypoints = new CinemachineSmoothPath.Waypoint[1];
+            path.m_Waypoints[0] = First;
+        }
     }
 }

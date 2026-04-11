@@ -46,7 +46,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     bool Is_On_Round;
 
-    int Difficult_Level, 
+    int Deception_Level, 
         Door_Amount;
 
     public float Spacing = 2f;
@@ -59,7 +59,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Player_Score = 0; 
         Door_Amount = 2; 
-        Difficult_Level = 1;
+        Deception_Level = 1;
         Max_Timer = 30f;
 
         Start_New_Round();
@@ -93,7 +93,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
 
 
-        switch (Difficult_Level)
+        switch (Deception_Level)
         {
             case 1:
                 Randomize_Chances = 0;
@@ -257,6 +257,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     void Start_New_Round()
     {
+        cam.Had_To_Move = false;
 
         Score_Display.text = Player_Score.ToString();
 
@@ -307,7 +308,10 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
                     {
                         Script_Doors_Evite_A_Isca Door_Object = hit.transform.root.GetComponent<Script_Doors_Evite_A_Isca>();
 
-                        cam.Start_Moving();
+                        cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, 0));
+
+                        cam.Had_To_Move = true;
+
                         if (Door_Object != null)
                         {
                             Is_On_Round = false;
@@ -347,17 +351,17 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     void Difficulting()
     {
 
-        //Nome extremamente goofy pra uma variavel, eu sei. Ainda vou achar um nome melhor.
-        string Decide_Whats_Bcome_Harder = (Possible_Progressions[Random.Range(0, Possible_Progressions.Count)]);
+
+        string Becoming_Harder = (Possible_Progressions[Random.Range(0, Possible_Progressions.Count)]);
 
         //Quero fazer um indicador visual do que está ficando mais dificil
-        print($"Aumentar dificuldade: {Decide_Whats_Bcome_Harder}");
+        print($"Aumentar dificuldade: {Becoming_Harder}");
 
-        switch (Decide_Whats_Bcome_Harder)
+        switch (Becoming_Harder)
         {
             case "Doors": Add_Doors(); break;
             case "Time":    Reduce_Max_Timer(); break;
-            case "Difficult":   Deixando_Mais_Dificil();    break;
+            case "Difficult":   Rise_Deception_Level();    break;
 
 
         }
@@ -390,14 +394,14 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         }
     }
 
-    //Ainda vou trocar o nome desse método. Eu também não gosto de como tem 2 coisas falando sobre "dificultar". Queria um nome diferente
-    void Deixando_Mais_Dificil()
+
+    void Rise_Deception_Level()
     {
-        Difficult_Level++;
+        Deception_Level++;
 
-        print($"Dificuldade nível: {Difficult_Level}");
+        print($"Dificuldade nível: {Deception_Level}");
 
-        if (Difficult_Level == 3)
+        if (Deception_Level == 3)
         {
             Possible_Progressions.Remove("Difficult");
             

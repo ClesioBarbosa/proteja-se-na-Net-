@@ -472,8 +472,6 @@ MonoBehaviour:
   m_Waypoints:
   - position: {x: 0, y: 0, z: -5}
     roll: 0
-  - position: {x: -0.027710795, y: 0.00000036334555, z: -0.009269379}
-    roll: 0
 --- !u!4 &654241964
 Transform:
   m_ObjectHideFlags: 0
@@ -503,6 +501,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vcam: {fileID: 222706350}
   dolly: {fileID: 0}
+  path: {fileID: 654241963}
+  Had_To_Move: 0
 --- !u!1 &764812860
 GameObject:
   m_ObjectHideFlags: 0
