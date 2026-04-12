@@ -1,4 +1,7 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class Script_Cutscene_Controller : MonoBehaviour
@@ -6,14 +9,14 @@ public class Script_Cutscene_Controller : MonoBehaviour
     //A cutscene que aparecerá na tela
     public VideoPlayer Video_Player;
 
-    //O script do minigame da cena
-    public MonoBehaviour Minigame_Script;
 
+    bool Fade_In;
+    bool Ready;
+
+    public Script_Camera_Fade Fade;
 
     void Start()
     {
-        //O minigame não deve começar ainda
-        Minigame_Script.enabled = false;
 
         //A cutscene começa
         Video_Player.Play();
@@ -25,16 +28,29 @@ public class Script_Cutscene_Controller : MonoBehaviour
     
     void Video_Has_Ended(VideoPlayer v)
     {
-        //O minigame começa
-        Minigame_Script.enabled = true;
-
-        //O gameObject da cutscene (Todo o canva) é desativado.
-        gameObject.SetActive(false);
+        Ending_Cutscene();
     }
 
     private void Update()
     {
         Touching_Screen();
+
+        F_In();
+        
+    }
+
+    void F_In()
+    {
+        if (Fade_In && Video_Player.targetCameraAlpha > 0f)
+        {
+            Video_Player.targetCameraAlpha -= 2f * Time.deltaTime;
+
+            if (Video_Player.targetCameraAlpha <= 0f)
+            {
+                Video_Player.targetCameraAlpha = 0f;
+                Ready = true;
+            }
+        }
     }
 
     void Touching_Screen()
@@ -46,13 +62,30 @@ public class Script_Cutscene_Controller : MonoBehaviour
 
             if (Getting_Touch.phase == TouchPhase.Began)
             {
-
-                //O vídeo para, o minigame começa e este canva é desativado.
-                Video_Player.Stop();
-                Minigame_Script.enabled = true;
-
-                gameObject.SetActive(false);
+                
+                StartCoroutine(While_Is_Dark());
             }
         }
+    }
+
+    public void Ending_Cutscene()
+    {
+        //O vídeo para, o minigame começa e este canva é desativado.
+
+        Video_Player.Stop();
+        Fade.Dramatic_Fade_In = true;
+        Destroy(gameObject);
+    }
+
+    public IEnumerator While_Is_Dark()
+    {
+
+        Fade_In = true;
+        
+
+        yield return new WaitUntil(() => Ready);
+
+        Ending_Cutscene();
+
     }
 }

@@ -52,13 +52,17 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
         
         Door_Hinge.transform.rotation = Final_Rotation;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         Destroy(Spawned_Object);
 
         if (Correct)
         {
             Main_Script.Right_Ansher();
+
+            yield return new WaitForSecondsRealtime(1f);
+
+            Main_Script.FadeIn = true;
         }
         else
         {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game_Manager_Evite_A_Isca : MonoBehaviour
 {
@@ -34,8 +35,10 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     List<GameObject> Doors_List = new List<GameObject>();
 
-    float Max_Timer, 
-        Current_Timer;
+    float Max_Timer,
+        Current_Timer,
+        Initial_Time,
+        Dramatic_Time;
 
     public int Player_Score, 
         Player_Highscore;
@@ -44,7 +47,16 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Timer_Display, 
         Score_Display;
 
-    bool Is_On_Round;
+    public Image Black_Fades;
+
+    Color BlackC;
+
+    bool Is_On_Round, 
+        First_Round,
+        Dramatic_Pause;
+
+    public bool FadeIn,
+        FadeOut;
 
     int Deception_Level, 
         Door_Amount;
@@ -53,7 +65,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public Script_Camera_Logic cam;
 
-    
+    public Script_Camera_Fade Fade;
 
     void Start()
     {
@@ -61,6 +73,12 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Door_Amount = 2; 
         Deception_Level = 1;
         Max_Timer = 30f;
+
+        Dramatic_Pause = false;
+        Dramatic_Time = 0f;
+
+        First_Round = true;
+        Initial_Time = 0f;
 
         Start_New_Round();
     }
@@ -70,6 +88,19 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
         Time_Ticking();
         Touching_Screen();
+        Hiding_Screen();
+
+        if (First_Round)
+        {
+
+            Initial_Time += Time.deltaTime;
+
+            if(Initial_Time > 3f)
+            {
+                First_Round = false;
+                Is_On_Round = true;
+            }
+        }
     }
 
     void Generating_Correct_Word()
@@ -268,8 +299,12 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
         Doors_List.Clear();
         Current_Timer = Max_Timer;
-        Is_On_Round = true;
 
+        if (!First_Round)
+        {
+            Is_On_Round = true;
+        }
+        
         Generating_Correct_Word();
     }
 
@@ -279,7 +314,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         {
             Current_Timer -= Time.deltaTime;
 
-            Timer_Display.text = ((int)Current_Timer).ToString();
+            
 
 
             if (Current_Timer <= 0f)
@@ -287,6 +322,8 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
                 Defeat();
             }
         }
+
+        Timer_Display.text = ((int)Current_Timer).ToString();
     }
 
     void Touching_Screen()
@@ -308,7 +345,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
                     {
                         Script_Doors_Evite_A_Isca Door_Object = hit.transform.root.GetComponent<Script_Doors_Evite_A_Isca>();
 
-                        cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, 0));
+                        cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, -1f));
 
                         cam.Had_To_Move = true;
 
@@ -326,26 +363,68 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public void Defeat()
     {
-
-        //Aqui precisa trocar de cena
-        print("Você Perdeu!");
-
         Is_On_Round = false;
+
+        Fade.Fade_Out = true;
+    }
+
+    void Hiding_Screen()
+    {
+        if (FadeIn)
+        {
+
+            BlackC.a += Time.deltaTime;
+            Black_Fades.color = BlackC;
+
+            if (BlackC.a > 0.99f)
+            {
+                BlackC.a = 1f;
+                Black_Fades.color = BlackC;
+
+                FadeIn = false;
+                Dramatic_Pause = true;
+            }
+        }
+
+        if (Dramatic_Pause)
+        {
+            Dramatic_Time += Time.deltaTime;
+
+            if (Dramatic_Time > 1f)
+            {
+                Dramatic_Pause = false;
+                FadeOut = true;
+                Start_New_Round();
+                Dramatic_Time = 0f;
+            }
+        }
+        else if (FadeOut)
+        {
+            BlackC.a -= Time.deltaTime;
+            Black_Fades.color = BlackC;
+
+            if (BlackC.a < 0.01f)
+            {
+                BlackC.a = 0f;
+                Black_Fades.color = BlackC;
+
+                FadeIn = false;
+                FadeOut = false;
+            }
+        }
     }
 
     public void Right_Ansher()
     {
 
         Player_Score++;
-        
+        Score_Display.text = Player_Score.ToString();
 
         if (Player_Score % 5 == 0 && Possible_Progressions.Count != 0)
         {
             
             Difficulting();
         }
-
-        Start_New_Round();
     }
 
     void Difficulting()
