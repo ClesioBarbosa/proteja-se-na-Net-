@@ -8,15 +8,30 @@ public class Script_Cutscene_Controller : MonoBehaviour
 {
     //A cutscene que aparecerá na tela
     public VideoPlayer Video_Player;
+    public RawImage image;
 
+    public Image Skip_Image;
+    Color Less_Image;
 
     bool Fade_In;
     bool Ready;
 
+    Slider slider;
     public Script_Camera_Fade Fade;
+    bool Stop_Changing;
+
+    Coroutine Skipping;
 
     void Start()
     {
+        Skipping = null;
+
+        Less_Image = image.color;
+
+        slider = GetComponent<Slider>();
+        Stop_Changing = false;
+
+        slider.value = 0f;
 
         //A cutscene começa
         Video_Player.Play();
@@ -41,13 +56,17 @@ public class Script_Cutscene_Controller : MonoBehaviour
 
     void F_In()
     {
-        if (Fade_In && Video_Player.targetCameraAlpha > 0f)
+        if (Fade_In && image.color.a > 0f)
         {
-            Video_Player.targetCameraAlpha -= 2f * Time.deltaTime;
+            Less_Image.a -= 1f * Time.deltaTime;
+            image.color = Less_Image;
+            Skip_Image.color = Less_Image;
 
-            if (Video_Player.targetCameraAlpha <= 0f)
+            if (image.color.a <= 0.05f)
             {
-                Video_Player.targetCameraAlpha = 0f;
+                Less_Image.a = 0;
+                image.color = Less_Image;
+                Skip_Image.color = Less_Image;
                 Ready = true;
             }
         }
@@ -55,16 +74,29 @@ public class Script_Cutscene_Controller : MonoBehaviour
 
     void Touching_Screen()
     {
-        //Quando o jogador toar na tela...
         if (Input.touchCount > 0)
         {
             Touch Getting_Touch = Input.GetTouch(0);
 
-            if (Getting_Touch.phase == TouchPhase.Began)
+            if (Getting_Touch.phase == TouchPhase.Stationary || Getting_Touch.phase == TouchPhase.Moved)
             {
-                
-                StartCoroutine(While_Is_Dark());
+                slider.value += Time.deltaTime;
+
+                if (slider.value == 1f)
+                {
+                    Stop_Changing = true;
+
+                    if(Skipping == null)
+                    {
+                        Skipping = StartCoroutine(While_Is_Dark());
+                    }
+                }
             }
+
+        }
+        else if (!Stop_Changing)
+        {
+            slider.value -= 0.5f * Time.deltaTime;
         }
     }
 

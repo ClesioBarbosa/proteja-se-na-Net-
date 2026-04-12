@@ -371,6 +371,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fade_In_Fade_Out
       objectReference: {fileID: 0}
+    - target: {fileID: 4888452749112294618, guid: b724febefeaed0c46a699d7b986ac515,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5182190560554889275, guid: b724febefeaed0c46a699d7b986ac515,
         type: 3}
       propertyPath: m_Color.a
@@ -1278,11 +1283,6 @@ PrefabInstance:
       propertyPath: m_TargetCamera
       value: 
       objectReference: {fileID: 764812862}
-    - target: {fileID: 292088274474852776, guid: cc2bb3d0ef85fef469f81d5b194c5862,
-        type: 3}
-      propertyPath: m_TargetCameraAlpha
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1208724262899945269, guid: cc2bb3d0ef85fef469f81d5b194c5862,
         type: 3}
       propertyPath: m_Camera
@@ -1388,6 +1388,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5980820839329868960, guid: cc2bb3d0ef85fef469f81d5b194c5862,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980820839329868960, guid: cc2bb3d0ef85fef469f81d5b194c5862,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7446092323886820939, guid: cc2bb3d0ef85fef469f81d5b194c5862,
         type: 3}
       propertyPath: m_Name
@@ -1398,14 +1408,8 @@ PrefabInstance:
       propertyPath: Fade
       value: 
       objectReference: {fileID: 215333108}
-    - target: {fileID: 8793115769841384130, guid: cc2bb3d0ef85fef469f81d5b194c5862,
-        type: 3}
-      propertyPath: Minigame_Script
-      value: 
-      objectReference: {fileID: 1748110975}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3404467405987375809, guid: cc2bb3d0ef85fef469f81d5b194c5862, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc2bb3d0ef85fef469f81d5b194c5862, type: 3}
