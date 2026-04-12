@@ -684,76 +684,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419442044}
   m_CullTransparentMesh: 1
---- !u!1 &654241962
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 654241964}
-  - component: {fileID: 654241963}
-  - component: {fileID: 654241965}
-  m_Layer: 0
-  m_Name: Dolly Track
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &654241963
+--- !u!114 &654241963 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2075868427747326851, guid: 9995b163a053c7e438c7bd91e6068283,
+    type: 3}
+  m_PrefabInstance: {fileID: 4103679861933882065}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 654241962}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a200b19ca1a9685429ed7e043c28e904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Resolution: 20
-  m_Appearance:
-    pathColor: {r: 0, g: 1, b: 0, a: 1}
-    inactivePathColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    width: 0.2
-  m_Looped: 0
-  m_Waypoints:
-  - position: {x: 0, y: 0, z: -5}
-    roll: 0
---- !u!4 &654241964
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 654241962}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.08623423, y: 0, z: 0, w: 0.9962749}
-  m_LocalPosition: {x: 0, y: 0.71, z: -2.23}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 9.894, y: 0, z: 0}
---- !u!114 &654241965
+--- !u!114 &654241965 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7687742619632790060, guid: 9995b163a053c7e438c7bd91e6068283,
+    type: 3}
+  m_PrefabInstance: {fileID: 4103679861933882065}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 654241962}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a23b149cdff85ad46a77e2eabbd24f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vcam: {fileID: 222706350}
-  dolly: {fileID: 0}
-  path: {fileID: 654241963}
-  Had_To_Move: 0
 --- !u!1 &764812860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,6 +1787,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9235329f93c78c94582ada6d0722ff99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &4103679861933882065
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 807124321460732542, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_Name
+      value: Dolly Track
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9962749
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.08623423
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 9.894
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490658420978560184, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687742619632790060, guid: 9995b163a053c7e438c7bd91e6068283,
+        type: 3}
+      propertyPath: vcam
+      value: 
+      objectReference: {fileID: 222706350}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9995b163a053c7e438c7bd91e6068283, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1843,6 +1870,6 @@ SceneRoots:
   - {fileID: 197839316}
   - {fileID: 1334804273}
   - {fileID: 1471829470}
-  - {fileID: 654241964}
+  - {fileID: 4103679861933882065}
   - {fileID: 222706351}
   - {fileID: 215333107}

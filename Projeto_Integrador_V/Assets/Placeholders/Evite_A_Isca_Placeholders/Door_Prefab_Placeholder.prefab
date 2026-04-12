@@ -357,3 +357,5 @@ MonoBehaviour:
   Seaweed: {fileID: 9191091346586314476, guid: 62c8e0fd453184b48a1a84f8b093d0a2, type: 3}
   Bait: {fileID: 7768427025941744390, guid: cd883e61436c8fa4892da7c697709195, type: 3}
   Correct: 0
+  Main_Script: {fileID: 0}
+  cam: {fileID: 7687742619632790060, guid: 9995b163a053c7e438c7bd91e6068283, type: 3}

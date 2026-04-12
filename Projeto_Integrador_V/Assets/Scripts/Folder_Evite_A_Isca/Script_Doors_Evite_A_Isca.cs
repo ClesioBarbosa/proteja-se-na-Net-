@@ -12,6 +12,14 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
     public bool Correct;
 
     [SerializeField] public Game_Manager_Evite_A_Isca Main_Script;
+
+    Script_Camera_Logic cam;
+
+    private void Awake()
+    {
+        cam = FindObjectOfType<Script_Camera_Logic>();
+
+    }
     void Start()
     {
         Door_Hinge = transform.Find("Door_Pivot_Placeholder").gameObject;
@@ -28,6 +36,10 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
     public IEnumerator Open_Door()
     {
+
+        yield return new WaitUntil(() => cam.Stopped);
+
+
         Spawn_Result();
 
         float Duration = 2f;

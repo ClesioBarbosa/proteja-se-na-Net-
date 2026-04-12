@@ -13,9 +13,12 @@ public class Script_Camera_Logic : MonoBehaviour
 
     public bool Had_To_Move;
 
+    public bool Stopped;
+
     void Start()
     {
         Had_To_Move = false;
+        Stopped = false;
         dolly = vcam.GetCinemachineComponent<CinemachineTrackedDolly>();
     }
 
@@ -24,11 +27,17 @@ public class Script_Camera_Logic : MonoBehaviour
         if (Had_To_Move)
         {
             dolly.m_PathPosition += Time.deltaTime * 1.0f;
+
+            if(dolly.m_PathPosition > 0.98f && !Stopped)
+            {
+                dolly.m_PathPosition = 1f;
+                Stopped = true;
+            }
         }
         else
         {
             dolly.m_PathPosition = 0f;
-
+            Stopped = false;
 
             Just_One_Waypoint();
         }
