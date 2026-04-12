@@ -1546,7 +1546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b27392b7390534cba22087a66a699b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Door_Prefab: {fileID: 9085555987036088592, guid: 21c226475cd9a014e84ec4d3adec1586,
+  Door_Prefab: {fileID: 511610154018420019, guid: 782bc07281d57f84e9ab65cee66c0153,
     type: 3}
   Player_Score: 0
   Player_Highscore: 0
@@ -1556,7 +1556,6 @@ MonoBehaviour:
   Black_Fades: {fileID: 356328679}
   FadeIn: 0
   FadeOut: 0
-  Spacing: 2
   cam: {fileID: 654241965}
   Fade: {fileID: 215333108}
 --- !u!65 &1748110976

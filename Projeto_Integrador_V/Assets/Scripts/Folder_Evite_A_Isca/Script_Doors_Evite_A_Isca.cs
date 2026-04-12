@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Script_Doors_Evite_A_Isca : MonoBehaviour
 {
-    GameObject Door_Hinge, Spawned_Object;
+    public GameObject Door_Hinge, Spawned_Object;
 
     public GameObject Seaweed,
         Bait;
@@ -22,9 +22,9 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
     }
     void Start()
     {
-        Door_Hinge = transform.Find("Door_Pivot_Placeholder").gameObject;
 
-        if(gameObject.tag == "Correct_Tag_Placeholder")
+
+        if(gameObject.tag == "Correct_Tag")
         {
             Correct = true;
         }

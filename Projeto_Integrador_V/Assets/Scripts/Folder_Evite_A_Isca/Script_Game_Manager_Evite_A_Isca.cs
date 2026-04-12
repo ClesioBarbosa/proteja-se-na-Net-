@@ -61,7 +61,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     int Deception_Level, 
         Door_Amount;
 
-    public float Spacing = 2f;
+    float Spacing = 3f;
 
     public Script_Camera_Logic cam;
 
@@ -258,7 +258,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
             GameObject Door_Instance = Instantiate(Door_Prefab,
                 Door_Position,
-                Quaternion.identity);
+                Door_Prefab.transform.rotation);
 
             Doors_List.Add(Door_Instance);
 
@@ -271,12 +271,12 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
             if (i == correct_Index)
             {
                 textToUse = Right_Word + Right_Domain;
-                Door_Instance.tag = "Correct_Tag_Placeholder";
+                Door_Instance.tag = "Correct_Tag";
             }
             else
             {
                 textToUse = Names[i];
-                Door_Instance.tag = "Wrong_Tag_Placeholder";
+                Door_Instance.tag = "Wrong_Tag";
             }
 
 
@@ -343,17 +343,19 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
                     if(Physics.Raycast(r, out hit))
                     {
-                        Script_Doors_Evite_A_Isca Door_Object = hit.transform.root.GetComponent<Script_Doors_Evite_A_Isca>();
-
-                        cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, -1f));
-
-                        cam.Had_To_Move = true;
+                        Script_Doors_Evite_A_Isca Door_Object = hit.transform.GetComponentInParent<Script_Doors_Evite_A_Isca>();
 
                         if (Door_Object != null)
                         {
-                            Is_On_Round = false;
+                            cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, -1f));
+                            cam.Had_To_Move = true;
 
+                            Is_On_Round = false;
                             StartCoroutine(Door_Object.Open_Door());
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Nenhuma porta encontrada no objeto clicado!");
                         }
                     }
                 }
