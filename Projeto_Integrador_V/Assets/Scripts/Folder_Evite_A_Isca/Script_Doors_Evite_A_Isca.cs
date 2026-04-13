@@ -45,8 +45,8 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
         float Duration = 2f;
         float Animation_Time = 0f;
 
-        Quaternion Initial_Rotation = Quaternion.Euler(0, 0, 0);
-        Quaternion Final_Rotation = Quaternion.Euler(0, -90, 0);
+        Quaternion Initial_Rotation = Quaternion.Euler(-90, 90, 0);
+        Quaternion Final_Rotation = Quaternion.Euler(-90, 0, 0);
 
         while (Animation_Time < Duration)
         {

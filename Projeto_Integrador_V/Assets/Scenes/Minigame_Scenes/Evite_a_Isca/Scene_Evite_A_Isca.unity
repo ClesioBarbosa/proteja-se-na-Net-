@@ -645,7 +645,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1546,7 +1546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b27392b7390534cba22087a66a699b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Door_Prefab: {fileID: 511610154018420019, guid: 782bc07281d57f84e9ab65cee66c0153,
+  Door_Prefab: {fileID: 455247722158046030, guid: 782bc07281d57f84e9ab65cee66c0153,
     type: 3}
   Player_Score: 0
   Player_Highscore: 0
