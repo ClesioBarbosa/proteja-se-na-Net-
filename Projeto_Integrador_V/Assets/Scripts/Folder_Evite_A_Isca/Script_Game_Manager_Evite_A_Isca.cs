@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Game_Manager_Evite_A_Isca : MonoBehaviour
+public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
 {
     string Right_Word, 
         Right_Domain;
@@ -266,7 +266,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
             Script_Doors_Evite_A_Isca Door_Script = Door_Instance.GetComponent<Script_Doors_Evite_A_Isca>();
 
-            Door_Script.Main_Script = this;
+            Door_Script.Main_Script = this.GetComponent<Script_Game_Manager_Evite_A_Isca>();
 
             if (i == correct_Index)
             {
@@ -347,7 +347,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
                         if (Door_Object != null)
                         {
-                            cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, -1f));
+                            cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, 0f));
                             cam.Had_To_Move = true;
 
                             Is_On_Round = false;
@@ -374,10 +374,9 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         if (FadeIn)
         {
-
             BlackC.a += Time.deltaTime;
             Black_Fades.color = BlackC;
-
+            print(BlackC.a);
             if (BlackC.a > 0.99f)
             {
                 BlackC.a = 1f;
@@ -480,7 +479,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Deception_Level++;
 
-        print($"Dificuldade nível: {Deception_Level}");
+        print($"Nível de Enganação: {Deception_Level}");
 
         if (Deception_Level == 3)
         {

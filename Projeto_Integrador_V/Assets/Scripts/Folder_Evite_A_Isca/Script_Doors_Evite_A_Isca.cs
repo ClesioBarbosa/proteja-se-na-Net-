@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Script_Doors_Evite_A_Isca : MonoBehaviour
@@ -11,7 +10,7 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
     public bool Correct;
 
-    [SerializeField] public Game_Manager_Evite_A_Isca Main_Script;
+    [SerializeField] public Script_Game_Manager_Evite_A_Isca Main_Script;
 
     Script_Camera_Logic cam;
 
@@ -39,7 +38,6 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
         yield return new WaitUntil(() => cam.Stopped);
 
-
         Spawn_Result();
 
         float Duration = 2f;
@@ -50,6 +48,7 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
         while (Animation_Time < Duration)
         {
+
             Animation_Time += Time.deltaTime;
             float t = Animation_Time / Duration;
 
@@ -66,7 +65,6 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(1f);
 
-        Destroy(Spawned_Object);
 
         if (Correct)
         {
@@ -84,12 +82,15 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
     void Spawn_Result()
     {
+
         if (Correct)
         {
+
             Spawned_Object = Instantiate(Seaweed, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (gameObject.transform.position.z + 2f)), Quaternion.identity);
         }
         else
         {
+
             Spawned_Object = Instantiate(Bait, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (gameObject.transform.position.z + 2f)), Quaternion.identity);
         }
     }
