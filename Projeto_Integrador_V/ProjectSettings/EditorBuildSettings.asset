@@ -12,5 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Minigame_Scenes/Scene_Evite_A_Isca.unity
     guid: 0e3025e9c041ad34eb97867723b1405c
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 84dc87dfeeb368a438a44b5d02676f8b,
+      type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: dad950cf1794a394bbbb06072e9b30c8, type: 2}

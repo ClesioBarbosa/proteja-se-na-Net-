@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class LabMove : MonoBehaviour
 {
-   private Quaternion rotacaoInicial;
+    private Quaternion rotacaoInicial;
     private bool giroscopioAtivo;
+
+    private Rigidbody rb;
 
     [Header("Configurações")]
     [SerializeField] float suavizacao = 5f;   // quanto maior, mais suave
     [SerializeField] float limiteRotacao = 30f; // limite de inclinação
+
+    void Awake()
+    {
+        rb=GetComponent<Rigidbody>();
+    }
 
     void Start()
     {
@@ -48,8 +55,8 @@ public class LabMove : MonoBehaviour
         Quaternion rotacaoFinal = Quaternion.Euler(angulos);
 
         // Suaviza o movimento
-        transform.rotation = Quaternion.Lerp(
-            transform.rotation,
+        rb.transform.rotation = Quaternion.Lerp( 
+            rb.transform.rotation,
             rotacaoInicial * rotacaoFinal,
             Time.deltaTime * suavizacao
         );
