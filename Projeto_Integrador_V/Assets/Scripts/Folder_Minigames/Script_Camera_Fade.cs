@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Script_Camera_Fade : MonoBehaviour
 {
-    public Image Black_Image;
+    [SerializeField] Image Black_Image;
     Color Black_Color;
 
     public bool Fade_In;
