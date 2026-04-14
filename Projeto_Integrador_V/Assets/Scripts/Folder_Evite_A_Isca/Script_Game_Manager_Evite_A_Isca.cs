@@ -376,7 +376,6 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
         {
             BlackC.a += Time.deltaTime;
             Black_Fades.color = BlackC;
-            print(BlackC.a);
             if (BlackC.a > 0.99f)
             {
                 BlackC.a = 1f;

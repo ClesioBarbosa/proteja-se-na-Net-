@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Door_Hinge: {fileID: 6138551688219833074}
   Spawned_Object: {fileID: 0}
-  Seaweed: {fileID: 9191091346586314476, guid: 62c8e0fd453184b48a1a84f8b093d0a2, type: 3}
+  Seaweed: {fileID: 3146337099217403879, guid: f63519a847e0c7d40a56ebedc3a399d1, type: 3}
   Bait: {fileID: 198045925784641354, guid: 4e5ea1cf6bce69d409ce3128f0354692, type: 3}
   Correct: 0
   Main_Script: {fileID: 0}
