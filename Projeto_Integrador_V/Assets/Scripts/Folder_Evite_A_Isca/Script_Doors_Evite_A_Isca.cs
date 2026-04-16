@@ -1,22 +1,29 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Script_Doors_Evite_A_Isca : MonoBehaviour
 {
-    GameObject Door_Hinge, Spawned_Object;
+    public GameObject Door_Hinge, Spawned_Object;
 
     public GameObject Seaweed,
         Bait;
 
     public bool Correct;
 
-    [SerializeField] public Game_Manager_Evite_A_Isca Main_Script;
+    [SerializeField] public Script_Game_Manager_Evite_A_Isca Main_Script;
+
+    Script_Camera_Logic cam;
+
+    private void Awake()
+    {
+        cam = FindObjectOfType<Script_Camera_Logic>();
+
+    }
     void Start()
     {
-        Door_Hinge = transform.Find("Door_Pivot_Placeholder").gameObject;
 
-        if(gameObject.tag == "Correct_Tag_Placeholder")
+
+        if(gameObject.tag == "Correct_Tag")
         {
             Correct = true;
         }
@@ -28,16 +35,20 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
     public IEnumerator Open_Door()
     {
+
+        yield return new WaitUntil(() => cam.Stopped);
+
         Spawn_Result();
 
         float Duration = 2f;
         float Animation_Time = 0f;
 
-        Quaternion Initial_Rotation = Quaternion.Euler(0, 0, 0);
-        Quaternion Final_Rotation = Quaternion.Euler(0, -90, 0);
+        Quaternion Initial_Rotation = Quaternion.Euler(-90, 90, 0);
+        Quaternion Final_Rotation = Quaternion.Euler(-90, 0, 0);
 
         while (Animation_Time < Duration)
         {
+
             Animation_Time += Time.deltaTime;
             float t = Animation_Time / Duration;
 
@@ -52,13 +63,16 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
         
         Door_Hinge.transform.rotation = Final_Rotation;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
-        Destroy(Spawned_Object);
 
         if (Correct)
         {
             Main_Script.Right_Ansher();
+
+            yield return new WaitForSecondsRealtime(1f);
+
+            Main_Script.FadeIn = true;
         }
         else
         {
@@ -68,12 +82,15 @@ public class Script_Doors_Evite_A_Isca : MonoBehaviour
 
     void Spawn_Result()
     {
+
         if (Correct)
         {
+
             Spawned_Object = Instantiate(Seaweed, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (gameObject.transform.position.z + 2f)), Quaternion.identity);
         }
         else
         {
+
             Spawned_Object = Instantiate(Bait, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (gameObject.transform.position.z + 2f)), Quaternion.identity);
         }
     }
