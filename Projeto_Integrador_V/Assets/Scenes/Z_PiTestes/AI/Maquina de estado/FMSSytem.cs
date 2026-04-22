@@ -47,10 +47,10 @@ public class FSMSystem
         }
     }
 
-    public void Update(GameObject player, GameObject npc)
+    public void Update(GameObject player, GameObject npc, bool detecao)
     {
-        currentState.Reason(player, npc);
-        currentState.Act(player, npc);
+        currentState.Reason(player, npc, detecao);
+        currentState.Act(player, npc, detecao);
     }
 }
 

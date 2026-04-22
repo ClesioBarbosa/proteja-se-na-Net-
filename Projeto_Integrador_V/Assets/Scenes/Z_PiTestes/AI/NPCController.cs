@@ -5,8 +5,9 @@ using UnityEngine;
 public class NPCController : MonoBehaviour
 {
     public FSMSystem fsm;
-    public int health = 100;
     [SerializeField] Transform [] patrolPoints;
+    [SerializeField] GameObject jogador;
+    [HideInInspector] public bool coli;
     
     private void Start()
     {
@@ -25,38 +26,29 @@ public class NPCController : MonoBehaviour
         ChaseState chase = new ChaseState();
         fsm.AddState(chase);
         chase.AddTransition(FSMTransition.LostPlayer, FSMStateID.Patrol);
-        chase.AddTransition(FSMTransition.LowHealth, FSMStateID.Flee);
-        chase.AddTransition(FSMTransition.RecoveredHealth, FSMStateID.Patrol);
         chase.AddTransition(FSMTransition.CloseCombat, FSMStateID.Attack);
 
         // === Estado: Atacar ===
         AttackState attack = new AttackState();
         fsm.AddState(attack);
-        attack.AddTransition(FSMTransition.LowHealth, FSMStateID.Flee);
         attack.AddTransition(FSMTransition.LostPlayer, FSMStateID.Chase);
+        attack.AddTransition(FSMTransition.HitPlayer, FSMStateID.Happy);
 
-        // === Estado: Fugir ===
-        FleeState flee = new FleeState();
-        fsm.AddState(flee);
-        flee.AddTransition(FSMTransition.RecoveredHealth, FSMStateID.Patrol);
-        flee.AddTransition(FSMTransition.Dying, FSMStateID.Dead);
-        flee.AddTransition(FSMTransition.LostPlayer, FSMStateID.Patrol);
-
-        DeadState dead = new DeadState();
-        fsm.AddState(dead);
-        dead.AddTransition(FSMTransition.Revived, FSMStateID.Patrol);
+        // === Estado: Feliz ===
+        HappyState happy = new HappyState();
+        fsm.AddState(happy);
     }
     
     private void Update()
     {
-        if (fsm == null) return;
-        if (health < 0) health = 0;
-            
-
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (fsm == null) return;            
+        if (jogador != null)
         {
-            fsm.Update(player, this.gameObject);
+            fsm.Update(jogador, this.gameObject, this.gameObject.GetComponent<NPCVisao>().playerDetectado);
         }
     }
+
+    void OnCollisionEnter(Collision col) { if(col.gameObject.CompareTag("Player")) coli=true;}
+    void OnCollisionExit(Collision col){ if(col.gameObject.CompareTag("Player")) coli=false;}
+
 }

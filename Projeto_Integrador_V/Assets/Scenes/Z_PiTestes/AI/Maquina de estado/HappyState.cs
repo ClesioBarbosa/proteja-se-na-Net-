@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : FSMState
+public class HappyState : FSMState
 {
     bool atacou;
-    public AttackState() { stateID = FSMStateID.Attack;}
+    public HappyState() { stateID = FSMStateID.Happy;}
 
     public override void Reason(GameObject player, GameObject npc, bool detectao)
     {
@@ -13,6 +13,11 @@ public class AttackState : FSMState
         {
             atacou=false;
             npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.LostPlayer);
+        }
+
+        if (atacou==true)
+        {
+            npc.GetComponent<Rigidbody>().AddForce(Vector3.up * 2.5f, ForceMode.Impulse);
         }
     }
 

@@ -8,8 +8,7 @@ using UnityEngine;
     Patrol,
     Chase,
     Attack,
-    Flee,
-    Dead
+    Happy
     }
 
 public enum FSMTransition
@@ -17,11 +16,8 @@ public enum FSMTransition
     NullTransition,
     SawPlayer,
     LostPlayer,
-    LowHealth,
-    RecoveredHealth,
-    Revived,
-    Dying,
-    CloseCombat
+    CloseCombat,
+    HitPlayer,
     }
     
 public abstract class FSMState
@@ -30,8 +26,8 @@ public abstract class FSMState
     protected FSMStateID stateID;
     public FSMStateID ID => stateID;
 
-    public virtual void Reason(GameObject player, GameObject npc) { }
-    public virtual void Act(GameObject player, GameObject npc) { }
+    public virtual void Reason(GameObject player, GameObject npc, bool detectao) { }
+    public virtual void Act(GameObject player, GameObject npc, bool detectao) { }
     
     public void AddTransition(FSMTransition trans, FSMStateID id)
     {

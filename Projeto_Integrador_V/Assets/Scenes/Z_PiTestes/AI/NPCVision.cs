@@ -3,12 +3,12 @@ using UnityEngine;
 public class NPCVision : MonoBehaviour
 {
     [Header("Configurações de Visão")]
-    public float raioDeVisao = 10f;
+    [SerializeField] float raioDeVisao = 10f;
     [Range(0, 180)]
-    public float anguloDeVisao = 60f;
-
+    [SerializeField] float anguloDeVisao = 60f;
+    
     [Header("Referência ao Player")]
-    public Transform player;
+    [SerializeField] Transform player;
 
     public bool playerDetectado = false;
 
@@ -24,12 +24,12 @@ public class NPCVision : MonoBehaviour
         {
             // Verifica se está dentro do ângulo de visão frontal
             float angulo = Vector3.Angle(transform.forward, direcaoAoPlayer.normalized);
+            Debug.Log(angulo);
 
             if (angulo <= anguloDeVisao / 2f)
             {
                 if (!playerDetectado)
                 {
-                    Debug.Log("Player entrou na frente do NPC!");
                     playerDetectado = true;
                 }
             }

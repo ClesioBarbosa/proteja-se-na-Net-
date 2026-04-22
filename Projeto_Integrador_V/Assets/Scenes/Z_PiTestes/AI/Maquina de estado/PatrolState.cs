@@ -9,7 +9,6 @@ public class PatrolState : FSMState
     private Transform[] waypoints;
     private int currentWaypoint;
 
-
     public PatrolState(Transform[] points)
     {
         waypoints = points;
@@ -17,15 +16,14 @@ public class PatrolState : FSMState
         stateID = FSMStateID.Patrol;
     }
 
-    public override void Reason(GameObject player, GameObject npc)
+    public override void Reason(GameObject player, GameObject npc, bool detectao)
     {
-        if (Vector3.Distance(player.transform.position, npc.transform.position) < 7f){
+        if (detectao){
             npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.SawPlayer);
         }
     }
-    //
 
-    public override void Act(GameObject player, GameObject npc)
+    public override void Act(GameObject player, GameObject npc, bool detectao)
     {
         npc.GetComponent<NavMeshAgent>().destination = Vector3.MoveTowards(npc.transform.localPosition, new Vector3(waypoints[currentWaypoint].position.x, npc.transform.localPosition.y, waypoints[currentWaypoint].position.z), 3.5f);
 
@@ -33,5 +31,6 @@ public class PatrolState : FSMState
         {
             currentWaypoint = (currentWaypoint + 1) % waypoints.Length;
         }
+        
     }
 }

@@ -11,25 +11,20 @@ public class ChaseState : FSMState
         stateID = FSMStateID.Chase;
     }
 
-    public override void Reason(GameObject player, GameObject npc)
+    public override void Reason(GameObject player, GameObject npc, bool detectao)
     {
-        if (Vector3.Distance(player.transform.position, npc.transform.position) > 7f){
+        if (!detectao){
 
             npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.LostPlayer);
         }
-
-        if(npc.GetComponent<NPCController>().health <= 50)
-        {
-            npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.LowHealth);
-        }
-
-        if(Vector3.Distance(player.transform.position, npc.transform.position) < 1f)
+        
+        if(detectao && npc.GetComponent<NPCController>().coli==true)
         {
             npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.CloseCombat);
         }
     }
 
-    public override void Act(GameObject player, GameObject npc)
+    public override void Act(GameObject player, GameObject npc, bool detectao)
     {
         npc.transform.LookAt(player.transform);
         npc.GetComponent<NavMeshAgent>().destination = player.transform.position;
