@@ -5,66 +5,22 @@ using UnityEngine;
 
 public class LabMove : MonoBehaviour
 {
-    private Quaternion rotacaoInicial;
-    private bool giroscopioAtivo;
+    public float speed = 5f;
+    public float smooth = 5f;
 
-    private Rigidbody rb;
+    private Vector2 move;
 
-    [Header("Configurações")]
-    [SerializeField] float suavizacao = 5f;   // quanto maior, mais suave
-    [SerializeField] float limiteRotacao = 30f; // limite de inclinação
-
-    void Awake()
+    void Update()
     {
-        rb=GetComponent<Rigidbody>();
-    }
+        // Captura a inclinação lateral
+        Vector2 tilt = new Vector2(Input.acceleration.x,Input.acceleration.y);
 
-    void Start()
-    {
-        if (SystemInfo.supportsGyroscope)
-        {
-            Input.gyro.enabled = true;
-            giroscopioAtivo = true;
+        // Suaviza o movimento (evita tremedeira)
+        move.x = Mathf.Lerp(move.x, tilt.x, Time.deltaTime * smooth);
+        move.y = Mathf.Lerp(move.y, tilt.y, Time.deltaTime * smooth);
 
-            rotacaoInicial = transform.rotation;
-        }
-        else
-        {
-            giroscopioAtivo = false;
-            Debug.Log("Giroscópio não suportado.");
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (!giroscopioAtivo) return;
-
-        // Pegando rotação do celular
-        Quaternion gyro = Input.gyro.attitude;
-
-        // Convertendo para o sistema da Unity
-        Quaternion rotacao = new Quaternion(gyro.x, gyro.y, -gyro.z, -gyro.w);
-
-        // Aplicando limites (evita girar demais)
-        Vector3 angulos = rotacao.eulerAngles;
-
-        angulos.x = LimitarAngulo(angulos.x, limiteRotacao);
-        angulos.y = 0; // trava eixo Y
-        angulos.z = LimitarAngulo(angulos.z, limiteRotacao);
-
-        Quaternion rotacaoFinal = Quaternion.Euler(angulos);
-
-        // Suaviza o movimento
-        rb.transform.rotation = Quaternion.Lerp( 
-            rb.transform.rotation,
-            rotacaoInicial * rotacaoFinal,
-            Time.deltaTime * suavizacao
-        );
-    }
-
-    float LimitarAngulo(float angulo, float limite)
-    {
-        if (angulo > 180) angulo -= 360;
-        return Mathf.Clamp(angulo, -limite, limite);
+        // Move o personagem
+        Vector3 movement = new Vector3(move.x, 0, move.y);
+        transform.Translate(movement * speed * Time.deltaTime);
     }
 }

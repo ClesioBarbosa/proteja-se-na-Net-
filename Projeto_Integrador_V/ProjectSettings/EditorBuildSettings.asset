@@ -12,7 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Minigame_Scenes/Scene_Evite_A_Isca.unity
     guid: 0e3025e9c041ad34eb97867723b1405c
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
+      guid: 6acd2de2091a8c14fa7b5f47a74cb5e3, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 84dc87dfeeb368a438a44b5d02676f8b,
       type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: 3789802b535822b4cafb43880c7d62fd, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: dad950cf1794a394bbbb06072e9b30c8, type: 2}
