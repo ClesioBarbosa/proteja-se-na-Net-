@@ -22,5 +22,6 @@ public class LabMove : MonoBehaviour
         // Move o personagem
         Vector3 movement = new Vector3(move.x, 0, move.y);
         transform.Translate(movement * speed * Time.deltaTime);
+        Debug.Log("aaaaaa");
     }
 }
