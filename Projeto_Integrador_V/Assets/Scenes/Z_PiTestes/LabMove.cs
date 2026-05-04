@@ -11,49 +11,39 @@ public class LabMove : MonoBehaviour
     [SerializeField] private float deadzone = 0.05f; // zona neutra
     
     private Vector2 move;
-
-    // opções de debug
-    [SerializeField] TMP_InputField[] mudarVari;
-    [SerializeField] TMP_Text tiltText;
-
-    void Start()
-    {
-        mudarVari[0].text = $"{velocidade}";
-        mudarVari[1].text = $"{suavidade}";
-        mudarVari[2].text = $"{deadzone}";
-    }
+    float cimabaixo=0;
 
     void Update()
     {
-        Vector2 tilt;
-        // Ajuste para Landscape Left
-        //tilt = new Vector2(-Input.acceleration.y, Input.acceleration.x);
-        tilt = new Vector2(Input.acceleration.x, Input.acceleration.y);
-        tiltText.text = $"Tilt: {tilt}";
-        TesteUI();
-
-        // Deadzone (para parar no neutro)
-        //if (Mathf.Abs(tilt.x) < deadzone) tilt.x = 0;
-        //if (Mathf.Abs(tilt.y) < deadzone) tilt.y = 0;
+        CimaBaixoToque();
+        Vector2 tilt = new Vector2 (Input.acceleration.x, cimabaixo);
 
         // Suavização correta
         move.x = Mathf.Lerp(move.x, tilt.x, Time.deltaTime * suavidade);
+        move.y = Mathf.Lerp(move.y, tilt.y, Time.deltaTime * suavidade);
 
         // Movimento no plano XZ
-        Vector3 movement = new Vector3(move.x, 0, move.y);
-        transform.Translate(movement * velocidade * Time.deltaTime, Space.World);
-        
+        Vector3 direcao = new Vector3(move.x, 0, move.y);
+        transform.Translate(direcao * velocidade * Time.deltaTime, Space.World);
     }
 
-    void TesteUI()
+    void CimaBaixoToque()
     {
-        float velocidadeNova, suavidadeNova, deadzoneNova;
-        float.TryParse(mudarVari[0].text, out velocidadeNova);
-        float.TryParse(mudarVari[1].text, out suavidadeNova);
-        float.TryParse(mudarVari[1].text, out deadzoneNova);
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            
+            switch(touch.phase)
+            {
+                case TouchPhase.Began:
+                if(touch.position.y > Screen.height / 2) {cimabaixo=1; Debug.Log("Cima");}
+                else{cimabaixo=-1; Debug.Log("Baixo");} 
+                break;
 
-        velocidade = velocidadeNova;
-        suavidade = suavidadeNova;
-        deadzone = deadzoneNova;
+                case TouchPhase.Ended:
+                cimabaixo=0;
+                break;
+            } 
+        }
     }
 }

@@ -3209,7 +3209,6 @@ GameObject:
   - component: {fileID: 1636365113}
   - component: {fileID: 1636365112}
   - component: {fileID: 1636365111}
-  - component: {fileID: 1636365116}
   - component: {fileID: 1636365117}
   m_Layer: 0
   m_Name: JogadorTeste
@@ -3331,19 +3330,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1636365116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636365110}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5fba5b58448b8348b7f1cdecb2ea206, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  v: 10
 --- !u!114 &1636365117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3356,14 +3342,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee869d8ed69f5647a5c64eee793b320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidade: 5
+  velocidade: 10
   suavidade: 5
   deadzone: 0.05
-  mudarVari:
-  - {fileID: 1505965957}
-  - {fileID: 515030214}
-  - {fileID: 1712958746}
-  tiltText: {fileID: 1160019743}
 --- !u!1 &1712958744
 GameObject:
   m_ObjectHideFlags: 0
