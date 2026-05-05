@@ -31,7 +31,6 @@ public class NPCController : MonoBehaviour
         // === Estado: Atacar ===
         AttackState attack = new AttackState();
         fsm.AddState(attack);
-        attack.AddTransition(FSMTransition.LostPlayer, FSMStateID.Chase);
         attack.AddTransition(FSMTransition.HitPlayer, FSMStateID.Happy);
 
         // === Estado: Feliz ===

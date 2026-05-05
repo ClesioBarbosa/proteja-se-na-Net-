@@ -2,29 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;
 
 public class LabMove : MonoBehaviour
 {
     [SerializeField] private float velocidade = 5f;
     [SerializeField] private float suavidade = 5f;
-    [SerializeField] private float deadzone = 0.05f; // zona neutra
     
     private Vector2 move;
     float cimabaixo=0;
+    [HideInInspector] public bool vivo=false;
 
     void Update()
     {
-        CimaBaixoToque();
-        Vector2 tilt = new Vector2 (Input.acceleration.x, cimabaixo);
+        if(vivo==true)
+        {
+            CimaBaixoToque();
+            Vector2 tilt = new Vector2 (Input.acceleration.x, cimabaixo);
 
-        // Suavização correta
-        move.x = Mathf.Lerp(move.x, tilt.x, Time.deltaTime * suavidade);
-        move.y = Mathf.Lerp(move.y, tilt.y, Time.deltaTime * suavidade);
+            // Suavização correta
+            move.x = Mathf.Lerp(move.x, tilt.x, Time.deltaTime * suavidade);
+            move.y = Mathf.Lerp(move.y, tilt.y, Time.deltaTime * suavidade);
 
-        // Movimento no plano XZ
-        Vector3 direcao = new Vector3(move.x, 0, move.y);
-        transform.Translate(direcao * velocidade * Time.deltaTime, Space.World);
+            // Movimento no plano XZ
+            Vector3 direcao = new Vector3(move.x, 0, move.y);
+            transform.Translate(direcao * velocidade * Time.deltaTime, Space.World);
+        }
     }
 
     void CimaBaixoToque()

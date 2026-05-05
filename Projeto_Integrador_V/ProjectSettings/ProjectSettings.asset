@@ -163,7 +163,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.Projeto_Integrador_V
+    Android: com.EquipePIVIIFBA.ProtejasenaNET
   buildNumber:
     Standalone: 0
     VisionOS: 0

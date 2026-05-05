@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Script_Tutorial_Scene : MonoBehaviour
 {
-    //Nome da cena pra qual esse script irá mandar.
+    //Nome da cena pra qual esse script irï¿½ mandar.
     public string Minigame_Scene;
 
 

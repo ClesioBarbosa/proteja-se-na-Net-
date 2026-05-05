@@ -3,7 +3,7 @@ using UnityEngine.Video;
 
 public class Script_Cutscene_Controller : MonoBehaviour
 {
-    //A cutscene que aparecerá na tela
+    //A cutscene que aparecerï¿½ na tela
     public VideoPlayer Video_Player;
 
     //O script do minigame da cena
@@ -12,23 +12,23 @@ public class Script_Cutscene_Controller : MonoBehaviour
 
     void Start()
     {
-        //O minigame não deve começar ainda
+        //O minigame nï¿½o deve comeï¿½ar ainda
         Minigame_Script.enabled = false;
 
-        //A cutscene começa
+        //A cutscene comeï¿½a
         Video_Player.Play();
 
-        //Quando o vídeo eventualmente chegar ao fim, irá chama a função abaixo
+        //Quando o vï¿½deo eventualmente chegar ao fim, irï¿½ chama a funï¿½ï¿½o abaixo
         Video_Player.loopPointReached += Video_Has_Ended;
     }
 
     
     void Video_Has_Ended(VideoPlayer v)
     {
-        //O minigame começa
+        //O minigame comeï¿½a
         Minigame_Script.enabled = true;
 
-        //O gameObject da cutscene (Todo o canva) é desativado.
+        //O gameObject da cutscene (Todo o canva) ï¿½ desativado.
         gameObject.SetActive(false);
     }
 
@@ -47,7 +47,7 @@ public class Script_Cutscene_Controller : MonoBehaviour
             if (Getting_Touch.phase == TouchPhase.Began)
             {
 
-                //O vídeo para, o minigame começa e este canva é desativado.
+                //O vï¿½deo para, o minigame comeï¿½a e este canva ï¿½ desativado.
                 Video_Player.Stop();
                 Minigame_Script.enabled = true;
 

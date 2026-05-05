@@ -12,7 +12,7 @@ public class AttackState : FSMState
         if (Vector3.Distance(player.transform.position, npc.transform.position) > 1f)
         {
             atacou=false;
-            npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.LostPlayer);
+            npc.GetComponent<NPCController>().fsm.PerformTransition(FSMTransition.HitPlayer);
         }
     }
 
@@ -22,7 +22,8 @@ public class AttackState : FSMState
         {
             npc.transform.LookAt(player.transform);
             Vector3 dirKnock = (npc.transform.position - player.transform.position).normalized;
-            player.GetComponent<Rigidbody>().AddForce(dirKnock * 50 * -1,ForceMode.Impulse);
+            player.GetComponent<Rigidbody>().AddForce(dirKnock * 25 * -1,ForceMode.Impulse);
+            player.GetComponent<LabMove>().vivo=false;
             atacou=true;
         }   
     }
