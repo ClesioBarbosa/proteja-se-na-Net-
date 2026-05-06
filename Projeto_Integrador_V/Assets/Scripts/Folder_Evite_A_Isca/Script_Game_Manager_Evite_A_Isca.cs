@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Game_Manager_Evite_A_Isca : MonoBehaviour
+public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
 {
     string Right_Word, 
         Right_Domain;
@@ -34,8 +35,10 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     List<GameObject> Doors_List = new List<GameObject>();
 
-    float Max_Timer, 
-        Current_Timer;
+    float Max_Timer,
+        Current_Timer,
+        Initial_Time,
+        Dramatic_Time;
 
     public int Player_Score, 
         Player_Highscore;
@@ -44,21 +47,38 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         Timer_Display, 
         Score_Display;
 
-    bool Is_On_Round;
+    public Image Black_Fades;
 
-    int Difficult_Level, 
+    Color BlackC;
+
+    bool Is_On_Round, 
+        First_Round,
+        Dramatic_Pause;
+
+    public bool FadeIn,
+        FadeOut;
+
+    int Deception_Level, 
         Door_Amount;
 
-    public float Spacing = 2f;
+    float Spacing = 3f;
 
-    
+    public Script_Camera_Logic cam;
+
+    public Script_Camera_Fade Fade;
 
     void Start()
     {
         Player_Score = 0; 
         Door_Amount = 2; 
-        Difficult_Level = 1;
+        Deception_Level = 1;
         Max_Timer = 30f;
+
+        Dramatic_Pause = false;
+        Dramatic_Time = 0f;
+
+        First_Round = true;
+        Initial_Time = 0f;
 
         Start_New_Round();
     }
@@ -68,6 +88,19 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
         Time_Ticking();
         Touching_Screen();
+        Hiding_Screen();
+
+        if (First_Round)
+        {
+
+            Initial_Time += Time.deltaTime;
+
+            if(Initial_Time > 3f)
+            {
+                First_Round = false;
+                Is_On_Round = true;
+            }
+        }
     }
 
     void Generating_Correct_Word()
@@ -91,7 +124,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
 
 
-        switch (Difficult_Level)
+        switch (Deception_Level)
         {
             case 1:
                 Randomize_Chances = 0;
@@ -225,7 +258,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
             GameObject Door_Instance = Instantiate(Door_Prefab,
                 Door_Position,
-                Quaternion.identity);
+                Door_Prefab.transform.rotation);
 
             Doors_List.Add(Door_Instance);
 
@@ -233,17 +266,17 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
             Script_Doors_Evite_A_Isca Door_Script = Door_Instance.GetComponent<Script_Doors_Evite_A_Isca>();
 
-            Door_Script.Main_Script = this;
+            Door_Script.Main_Script = this.GetComponent<Script_Game_Manager_Evite_A_Isca>();
 
             if (i == correct_Index)
             {
                 textToUse = Right_Word + Right_Domain;
-                Door_Instance.tag = "Correct_Tag_Placeholder";
+                Door_Instance.tag = "Correct_Tag";
             }
             else
             {
                 textToUse = Names[i];
-                Door_Instance.tag = "Wrong_Tag_Placeholder";
+                Door_Instance.tag = "Wrong_Tag";
             }
 
 
@@ -255,6 +288,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     void Start_New_Round()
     {
+        cam.Had_To_Move = false;
 
         Score_Display.text = Player_Score.ToString();
 
@@ -265,8 +299,12 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
         Doors_List.Clear();
         Current_Timer = Max_Timer;
-        Is_On_Round = true;
 
+        if (!First_Round)
+        {
+            Is_On_Round = true;
+        }
+        
         Generating_Correct_Word();
     }
 
@@ -276,7 +314,7 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         {
             Current_Timer -= Time.deltaTime;
 
-            Timer_Display.text = ((int)Current_Timer).ToString();
+            
 
 
             if (Current_Timer <= 0f)
@@ -284,6 +322,8 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
                 Defeat();
             }
         }
+
+        Timer_Display.text = ((int)Current_Timer).ToString();
     }
 
     void Touching_Screen()
@@ -303,13 +343,19 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
                     if(Physics.Raycast(r, out hit))
                     {
-                        Script_Doors_Evite_A_Isca Door_Object = hit.transform.root.GetComponent<Script_Doors_Evite_A_Isca>();
+                        Script_Doors_Evite_A_Isca Door_Object = hit.transform.GetComponentInParent<Script_Doors_Evite_A_Isca>();
 
                         if (Door_Object != null)
                         {
-                            Is_On_Round = false;
+                            cam.Create_Waypoint(new Vector3(Door_Object.transform.position.x, Door_Object.transform.position.y, 0f));
+                            cam.Had_To_Move = true;
 
+                            Is_On_Round = false;
                             StartCoroutine(Door_Object.Open_Door());
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Nenhuma porta encontrada no objeto clicado!");
                         }
                     }
                 }
@@ -319,42 +365,82 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public void Defeat()
     {
-
-        //Aqui precisa trocar de cena
-        print("Você Perdeu!");
-
         Is_On_Round = false;
+
+        Fade.Fade_Out = true;
+    }
+
+    void Hiding_Screen()
+    {
+        if (FadeIn)
+        {
+            BlackC.a += Time.deltaTime;
+            Black_Fades.color = BlackC;
+            if (BlackC.a > 0.99f)
+            {
+                BlackC.a = 1f;
+                Black_Fades.color = BlackC;
+
+                FadeIn = false;
+                Dramatic_Pause = true;
+            }
+        }
+
+        if (Dramatic_Pause)
+        {
+            Dramatic_Time += Time.deltaTime;
+
+            if (Dramatic_Time > 1f)
+            {
+                Dramatic_Pause = false;
+                FadeOut = true;
+                Start_New_Round();
+                Dramatic_Time = 0f;
+            }
+        }
+        else if (FadeOut)
+        {
+            BlackC.a -= Time.deltaTime;
+            Black_Fades.color = BlackC;
+
+            if (BlackC.a < 0.01f)
+            {
+                BlackC.a = 0f;
+                Black_Fades.color = BlackC;
+
+                FadeIn = false;
+                FadeOut = false;
+            }
+        }
     }
 
     public void Right_Ansher()
     {
 
         Player_Score++;
-        
+        Score_Display.text = Player_Score.ToString();
 
         if (Player_Score % 5 == 0 && Possible_Progressions.Count != 0)
         {
             
             Difficulting();
         }
-
-        Start_New_Round();
     }
 
     void Difficulting()
     {
 
-        //Nome extremamente goofy pra uma variavel, eu sei. Ainda vou achar um nome melhor.
-        string Decide_Whats_Bcome_Harder = (Possible_Progressions[Random.Range(0, Possible_Progressions.Count)]);
+
+        string Becoming_Harder = (Possible_Progressions[Random.Range(0, Possible_Progressions.Count)]);
 
         //Quero fazer um indicador visual do que está ficando mais dificil
-        print($"Aumentar dificuldade: {Decide_Whats_Bcome_Harder}");
+        print($"Aumentar dificuldade: {Becoming_Harder}");
 
-        switch (Decide_Whats_Bcome_Harder)
+        switch (Becoming_Harder)
         {
             case "Doors": Add_Doors(); break;
             case "Time":    Reduce_Max_Timer(); break;
-            case "Difficult":   Deixando_Mais_Dificil();    break;
+            case "Difficult":   Rise_Deception_Level();    break;
 
 
         }
@@ -387,14 +473,14 @@ public class Game_Manager_Evite_A_Isca : MonoBehaviour
         }
     }
 
-    //Ainda vou trocar o nome desse método. Eu também não gosto de como tem 2 coisas falando sobre "dificultar". Queria um nome diferente
-    void Deixando_Mais_Dificil()
+
+    void Rise_Deception_Level()
     {
-        Difficult_Level++;
+        Deception_Level++;
 
-        print($"Dificuldade nível: {Difficult_Level}");
+        print($"Nível de Enganação: {Deception_Level}");
 
-        if (Difficult_Level == 3)
+        if (Deception_Level == 3)
         {
             Possible_Progressions.Remove("Difficult");
             
