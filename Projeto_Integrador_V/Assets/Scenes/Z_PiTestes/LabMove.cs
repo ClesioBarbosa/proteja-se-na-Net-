@@ -5,40 +5,47 @@ using UnityEngine;
 
 public class LabMove : MonoBehaviour
 {
-    Gyroscope gyro;
-    bool gyroEnabled;
+    [SerializeField] private float velocidade = 5f;
+    [SerializeField] private float suavidade = 5f;
+    
+    private Vector2 move;
+    float cimabaixo=0;
+    [HideInInspector] public bool vivo=false;
 
-    void Start()
+    void Update()
     {
-        StartCoroutine(DelayedStart());
-    }
-
-    private IEnumerator DelayedStart()
-    {
-            yield return new WaitForSeconds(1f);
-            gyroEnabled = EnableGyro();
-    }
-
-    private bool EnableGyro()
-    {
-        if (SystemInfo.supportsGyroscope)
+        if(vivo==true)
         {
-            Input.gyro.enabled = true;
-            gyro = Input.gyro;
+            CimaBaixoToque();
+            Vector2 tilt = new Vector2 (Input.acceleration.x, cimabaixo);
 
-            return true;
+            // Suavização correta
+            move.x = Mathf.Lerp(move.x, tilt.x, Time.deltaTime * suavidade);
+            move.y = Mathf.Lerp(move.y, tilt.y, Time.deltaTime * suavidade);
+
+            // Movimento no plano XZ
+            Vector3 direcao = new Vector3(move.x, 0, move.y);
+            transform.Translate(direcao * velocidade * Time.deltaTime, Space.World);
         }
-            return false;
     }
 
-     private void Update()
+    void CimaBaixoToque()
     {
-        if (gyroEnabled) {GirarGiros();}
-        else Debug.Log("NÃO");
-    }
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            
+            switch(touch.phase)
+            {
+                case TouchPhase.Began:
+                if(touch.position.y > Screen.height / 2) {cimabaixo=1; Debug.Log("Cima");}
+                else{cimabaixo=-1; Debug.Log("Baixo");} 
+                break;
 
-    void GirarGiros()
-    {
-        gameObject.transform.rotation  = gyro.attitude;
+                case TouchPhase.Ended:
+                cimabaixo=0;
+                break;
+            } 
+        }
     }
 }
