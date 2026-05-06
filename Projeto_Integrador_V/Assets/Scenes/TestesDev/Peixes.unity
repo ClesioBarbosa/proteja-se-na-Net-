@@ -459,7 +459,7 @@ MonoBehaviour:
     type: 3}
   minFish: 1
   maxFish: 10
-  spawnDistance: 5
+  spawnDistance: 20
   spread: 3
   spawnInterval: 4
   cam: {fileID: 314497099}

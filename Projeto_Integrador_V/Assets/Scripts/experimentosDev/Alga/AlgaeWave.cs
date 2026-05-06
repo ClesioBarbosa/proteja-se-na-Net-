@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
+[ExecuteAlways]
 public class AlgaeWave : MonoBehaviour
 {
     public int segments = 6;//define a quantidade de nós que a linha tem
