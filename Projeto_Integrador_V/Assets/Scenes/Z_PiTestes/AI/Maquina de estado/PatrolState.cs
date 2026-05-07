@@ -25,8 +25,8 @@ public class PatrolState : FSMState
 
     public override void Act(GameObject player, GameObject npc, bool detectao)
     {
-        npc.GetComponent<NavMeshAgent>().destination = Vector3.MoveTowards(npc.transform.localPosition, new Vector3(waypoints[currentWaypoint].position.x, npc.transform.localPosition.y, waypoints[currentWaypoint].position.z), 3.5f);
-
+        //npc.GetComponent<NavMeshAgent>().destination = Vector3.MoveTowards(npc.transform.localPosition, new Vector3(waypoints[currentWaypoint].position.x, npc.transform.localPosition.y, waypoints[currentWaypoint].position.z), 3.5f);
+        npc.GetComponent<NavMeshAgent>().destination = new Vector3(waypoints[currentWaypoint].position.x, npc.transform.localPosition.y, waypoints[currentWaypoint].position.z);
         if (Vector3.Distance(npc.transform.localPosition, waypoints[currentWaypoint].position) < 1f)
         {
             currentWaypoint = (currentWaypoint + 1) % waypoints.Length;

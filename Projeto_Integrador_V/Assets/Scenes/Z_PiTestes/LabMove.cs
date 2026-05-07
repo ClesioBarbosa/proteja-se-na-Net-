@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LabMove : MonoBehaviour
 {
@@ -46,6 +47,14 @@ public class LabMove : MonoBehaviour
                 cimabaixo=0;
                 break;
             } 
+        }
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.layer==4)
+        {
+            SceneManager.LoadScene("MenuMiniGames");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
 
     public GameObject Door_Prefab;
 
-    //Os nomes dos sites são sobrenomes de amigos do meu primeiro semestre, parceiros de equipe de projetos integradores, professores de oficina e orientadores das minhas equipes
-    //Quem achar ruim é bobo
+    //Os nomes dos sites sï¿½o sobrenomes de amigos do meu primeiro semestre, parceiros de equipe de projetos integradores, professores de oficina e orientadores das minhas equipes
+    //Quem achar ruim ï¿½ bobo
     List<string> Possible_Names = new List<string> { "Pereira", "Rozendo", "Nascimento", "Campos", "Rangel", "Santos", "Ferreira", "Lima", "Caridade", "Barreto", 
         "Oliveira", "Mota", "Mafra", "Jacinto", "Silva", "Lopes", "Desiderio", "Brito", "Braga", "Cerqueira", 
         "Sanches", "Barbosa", "Pacheco", "Freire", "Cruz", "Carmo", "Souto", "Cunha", "Andrade", 
@@ -337,7 +338,7 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
                 if(Getting_Touch.phase == TouchPhase.Began)
                 {
 
-                    //Eu não pensei em nomes condinzentes para por nessas variaveis...
+                    //Eu nï¿½o pensei em nomes condinzentes para por nessas variaveis...
                     Ray r = Camera.main.ScreenPointToRay(Getting_Touch.position);
                     RaycastHit hit;
 
@@ -368,6 +369,8 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
         Is_On_Round = false;
 
         Fade.Fade_Out = true;
+
+        SceneManager.LoadScene("MenuMiniGames");
     }
 
     void Hiding_Screen()
@@ -433,7 +436,7 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
 
         string Becoming_Harder = (Possible_Progressions[Random.Range(0, Possible_Progressions.Count)]);
 
-        //Quero fazer um indicador visual do que está ficando mais dificil
+        //Quero fazer um indicador visual do que estï¿½ ficando mais dificil
         print($"Aumentar dificuldade: {Becoming_Harder}");
 
         switch (Becoming_Harder)
@@ -464,7 +467,7 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Max_Timer -= 5f;
 
-        print($"Tempo máximo: {Max_Timer}");
+        print($"Tempo mï¿½ximo: {Max_Timer}");
 
         if (Max_Timer == 5f)
         {
@@ -478,7 +481,7 @@ public class Script_Game_Manager_Evite_A_Isca : MonoBehaviour
     {
         Deception_Level++;
 
-        print($"Nível de Enganação: {Deception_Level}");
+        print($"Nï¿½vel de Enganaï¿½ï¿½o: {Deception_Level}");
 
         if (Deception_Level == 3)
         {
